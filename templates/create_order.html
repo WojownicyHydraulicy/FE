@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Formularz zgłoszenia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/create_order.css') }}">
+</head>
+<body>
+    <div class="top-bar">
+        <a href="/login/" class="login-button">Zaloguj</a>
+    </div>
+    <div class="main-container">
+        <h1>Formularz Zgłoszenia Usterki</h1>
+        <form id="orderForm" enctype="multipart/form-data" autocomplete="off">
+            <div class="form-group">
+                <label>Imię i nazwisko</label>
+                <input type="text" name="name" required>
+            </div>
+            <div class="form-group">
+                <label>Telefon</label>
+                <input type="text" name="telephone" required>
+            </div>
+            <div class="form-group">
+                <label>Miasto</label>
+                <input type="text" name="city" required>
+            </div>
+            <div class="form-group">
+                <label>Ulica</label>
+                <input type="text" name="street" required>
+            </div>
+            <div class="form-group">
+                <label>Kod pocztowy</label>
+                <input type="text" name="post_code" required>
+            </div>
+            <div class="form-group">
+                <label>Numer domu</label>
+                <input type="text" name="house_nr" required>
+            </div>
+            <div class="form-group">
+                <label>Trudność usterki</label>
+                <select name="defect_difficulty" required>
+                    <option value="łatwa">Łatwa</option>
+                    <option value="średnia">Średnia</option>
+                    <option value="trudna">Trudna</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Opis usterki</label>
+                <textarea name="description" rows="4" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Zdjęcie (opcjonalnie)</label>
+                <input type="file" name="photo" accept="image/*">
+            </div>
+            <button type="submit" id="submitBtn">Wyślij zgłoszenie</button>
+            <div id="spinner" class="spinner" style="display:none;"></div>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script src="{{ url_for('static', filename='js/create_order.js') }}"></script>
+</body>
+</html>

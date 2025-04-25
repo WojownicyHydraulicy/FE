@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <title>Logowanie</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    </head>    
+<body>
+    <h2>Podaj token dostępowy</h2>
+    <form id="loginForm">
+        <label>Token: <input type="text" id="token" required></label>
+        <button type="submit">Zaloguj</button>
+    </form>
+    <p class="centered-back"><a href="/" class="back-button">← Powrót do składania zamówień</a></p>
+    <div id="loginError" style="color: red;"></div>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

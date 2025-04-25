@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Pracownika</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/orders.css') }}">
+</head>
+<body>
+    <!-- Pasek górny -->
+    <div class="top-bar">
+        <a href="/orders_on_addresses" class="login-button">📍 Wszystkie zlecenia wg adresu</a>
+    </div>
+
+    <!-- Główna treść -->
+    <div id="mainContent" class="main-container" style="display:none;">
+        <h2>Twoje Zlecenia</h2>
+        <div id="ordersList">Ładowanie zleceń...</div>
+        <p class="centered-back"><a href="/" class="back-button">← Powrót do składania zamówień</a></p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/orders.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zlecenia według adresu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/orders_on_addresses.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Wyszukaj zlecenia według adresu</h2>
+        <form id="searchForm" class="search-form">
+            <label>Miasto (wymagane): <input type="text" name="city" required></label>
+            <label>Ulica: <input type="text" name="street"></label>
+            <label>Kod pocztowy: <input type="text" name="post_code"></label>
+            <label>Numer domu: <input type="text" name="house_nr"></label>
+            <button type="submit" class="btn-primary">Szukaj</button>
+        </form>
+        <p class="centered-back">
+            <a href="/orders_panel" class="back-button">← Powrót do panelu pracownika</a>
+        </p>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+    <script src="{{ url_for('static', filename='js/orders_on_addresses.js') }}"></script>
+</body>
+</html>
