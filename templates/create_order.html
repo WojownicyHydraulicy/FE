@@ -1,63 +1,126 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Formularz zgłoszenia</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/create_order.css') }}">
+  <meta charset="UTF-8">
+  <title>Formularz zgłoszenia</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/create_order.css') }}">
 </head>
 <body>
-    <div class="top-bar">
-        <a href="/login/" class="login-button">Zaloguj</a>
+  <div class="top-bar">
+    <a href="/login/" class="login-button">Zaloguj</a>
+  </div>
+  <div class="main-container">
+    <h1>Formularz Zgłoszenia Usterki</h1>
+    <form id="orderForm" action="/create_order/" method="post" enctype="multipart/form-data" autocomplete="off">
+      <div class="form-group">
+        <label>Imię i nazwisko</label>
+        <input type="text" name="name" required>
+      </div>
+      <div class="form-group">
+        <label>Telefon</label>
+        <input type="text" name="telephone" required>
+      </div>
+      <div class="form-group">
+        <label>Miasto</label>
+        <select name="city" id="citySelect" required>
+          <option value="">Wybierz miasto...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Ulica</label>
+        <input type="text" name="street" required>
+      </div>
+      <div class="form-group">
+        <label>Kod pocztowy</label>
+        <input type="text" name="post_code" required>
+      </div>
+      <div class="form-group">
+        <label>Numer domu</label>
+        <input type="text" name="house_nr" required>
+      </div>
+      <div class="form-group">
+        <label>Opis usterki</label>
+        <textarea name="description" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Wskazanie pilności</label>
+        <select name="urgency" required>
+          <option value="">Wybierz priorytet...</option>
+          <option value="Niski priorytet">Niski priorytet</option>
+          <option value="Pilne">Pilne</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label>Metoda płatności</label>
+        <select name="payment_method" required>
+          <option value="">Wybierz metodę płatności...</option>
+          <option value="Karta">Karta</option>
+          <option value="Gotówka">Gotówka</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Dokument sprzedaży</label>
+        <select name="sales_document" id="salesDocumentSelect" required>
+          <option value="">Wybierz dokument sprzedaży...</option>
+          <option value="Faktura">Faktura</option>
+          <option value="Paragon">Paragon</option>
+        </select>
+      </div>
+      <div id="invoiceFields" style="display:none;">
+        <div class="form-group">
+          <label>Nazwa firmy</label>
+          <input type="text" name="billing_name">
+        </div>
+        <div class="form-group">
+          <label>Adres</label>
+          <input type="text" name="billing_address">
+        </div>
+        <div class="form-group">
+          <label>Miejscowość</label>
+          <input type="text" name="billing_city">
+        </div>
+        <div class="form-group">
+          <label>Kod pocztowy</label>
+          <input type="text" name="billing_postcode">
+        </div>
+        <div class="form-group">
+          <label>Kraj</label>
+          <input type="text" name="billing_country">
+        </div>
+        <div class="form-group">
+          <label>Telefon</label>
+          <input type="text" name="billing_phone">
+        </div>
+        <div class="form-group">
+          <label>NIP</label>
+          <input type="text" name="billing_tax_id">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Zdjęcie (opcjonalnie)</label>
+        <input type="file" name="photo" accept="image/*">
+      </div>
+      <button type="submit" id="submitBtn">Wyślij zgłoszenie</button>
+      <div id="spinner" class="spinner" style="display:none;"></div>
+    </form>
+    <div id="result"></div>
+  </div>
+
+  <div id="overlaySpinner" class="overlay hidden">
+    <div class="loader"></div>
+  </div>
+  <div id="overlayModal" class="overlay hidden">
+    <div class="modal-box">
+      <p id="modalMessage"></p>
+      <button id="modalClose">OK</button>
     </div>
-    <div class="main-container">
-        <h1>Formularz Zgłoszenia Usterki</h1>
-        <form id="orderForm" enctype="multipart/form-data" autocomplete="off">
-            <div class="form-group">
-                <label>Imię i nazwisko</label>
-                <input type="text" name="name" required>
-            </div>
-            <div class="form-group">
-                <label>Telefon</label>
-                <input type="text" name="telephone" required>
-            </div>
-            <div class="form-group">
-                <label>Miasto</label>
-                <input type="text" name="city" required>
-            </div>
-            <div class="form-group">
-                <label>Ulica</label>
-                <input type="text" name="street" required>
-            </div>
-            <div class="form-group">
-                <label>Kod pocztowy</label>
-                <input type="text" name="post_code" required>
-            </div>
-            <div class="form-group">
-                <label>Numer domu</label>
-                <input type="text" name="house_nr" required>
-            </div>
-            <div class="form-group">
-                <label>Trudność usterki</label>
-                <select name="defect_difficulty" required>
-                    <option value="łatwa">Łatwa</option>
-                    <option value="średnia">Średnia</option>
-                    <option value="trudna">Trudna</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Opis usterki</label>
-                <textarea name="description" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <label>Zdjęcie (opcjonalnie)</label>
-                <input type="file" name="photo" accept="image/*">
-            </div>
-            <button type="submit" id="submitBtn">Wyślij zgłoszenie</button>
-            <div id="spinner" class="spinner" style="display:none;"></div>
-        </form>
-        <div id="result"></div>
-    </div>
-    <script src="{{ url_for('static', filename='js/create_order.js') }}"></script>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/create_order.js') }}"></script>
 </body>
 </html>

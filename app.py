@@ -6,6 +6,10 @@ app = Flask(__name__)
 def create_order_form():
     return render_template("create_order.html")
 
+@app.route("/register/")               # <--- DODANE
+def register_page():
+    return render_template("register.html")
+
 @app.route("/login/")
 def login_page():
     return render_template("login.html")

@@ -35,9 +35,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             div.classList.add("order"); // dodanie klasy dla lepszej stylizacji
             div.innerHTML = `
                 <h3>Adres: ${order.street} ${order.house_nr}, ${order.post_code} ${order.city}</h3>
-                <p>Imię: ${order.name}</p>
-                <p>Telefon: ${order.telephone}</p>
-                <p>Opis: ${order.description}</p>
+                <b><p>Imię:</b> ${order.name}</p>
+                <b><p>Telefon:</b> ${order.telephone}</p>
+                <b><p>Opis:</b> ${order.description}</p>
+                <b><p>Data umówienia wizyty:</b> ${order.appointment_date}</p>
                 ${order.photo_url ? `<img src="${order.photo_url}" alt="Zdjęcie zlecenia">` : ""}
                 <div class="order-buttons">
                     <button onclick="finishOrder('${order.order_id}', 'Completed')">Zakończ</button>

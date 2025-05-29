@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Logowanie</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+  <h2>Logowanie</h2>
+  <form id="loginForm">
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="email" required>
+    </div>
+    <div class="form-group">
+      <label>Hasło</label>
+      <input type="password" id="password" required>
+    </div>
+    <button type="submit">Zaloguj</button>
+  </form>
+  <p id="loginError" style="color:red;"></p>
+  <p class="centered-back"><a href="/register/" class="back-button">← Załóż konto</a></p>
+
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

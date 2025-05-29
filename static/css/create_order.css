@@ -68,3 +68,119 @@
     0% { transform: rotate(0deg);}
     100% { transform: rotate(360deg);}
 }
+
+/* … istniejące style … */
+
+/* pełnoekranowe nakładki */
+.overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  .hidden { display: none; }
+  
+  /* spinner (już masz, ale teraz centrowany na overlay) */
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #0d6efd;
+    border-radius: 50%;
+    width: 48px; height: 48px;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Nowy loader */
+.loader {
+  height: 60px;
+  aspect-ratio: 1;
+  --c:no-repeat linear-gradient(#fff 0 0);
+  background: var(--c), var(--c), var(--c), var(--c);
+  background-size: 33.4% 33.4%;
+  animation: l7 1.5s infinite linear;
+}
+@keyframes l7 {
+  0%,
+  5%   {background-position:0 0,50% 0,0 50%,50% 50%}
+  25%  {background-position:0 0,100% 0,0 100%,50% 50%}
+  50%  {background-position:50% 0,100% 0,0 100%,0 50%}
+  75%  {background-position:50% 0,100% 50%,0 100%,0 0}
+  95%,
+  100% {background-position:50% 0,50% 50%,0 50%,0 0} 
+}
+
+  /* modal z wynikiem */
+.modal-box {
+  background: #fff;
+  padding: 40px 24px;         /* zwiększ wysokość przez większy padding góra/dół */
+  border-radius: 12px;
+  text-align: center;
+  max-width: 380px;           /* zmniejsz szerokość */
+  min-height: 320px;          /* zwiększ minimalną wysokość */
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+  .modal-box p {
+    margin: 12px 0;
+    font-size: 16px;
+  }
+  .modal-box button {
+    margin-top: 16px;
+    padding: 8px 20px;
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+  .modal-box button:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+  }
+
+.modal-success h2 {
+  color: #198754;
+  margin-bottom: 12px;
+  font-size: 2em; /* zwiększona czcionka */
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.modal-info {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+.modal-info div {
+  font-size: 0.95em;
+}
+.modal-comment {
+  background: #f1f3f5;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.95em;
+  line-height: 1.5;
+  max-height: 200px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.modal-price {
+  font-size: 1.4em;
+  font-weight: 600;
+  text-align: center;
+  margin: 16px 0;
+  color: #0d6efd;
+}
+.wizard-step { opacity: 0.5; display: none; transition: opacity .3s; }
+.wizard-step.active { display: block; opacity: 1; }
+.wizard-nav { display:flex; justify-content: space-between; max-width:400px; margin:16px auto; }
+.btn-nav { padding:8px 16px; }
