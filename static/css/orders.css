@@ -1,80 +1,855 @@
-/* Kontener listy zleceń - wyświetlany jako siatka */
-#ordersList {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 70px; /* Większy odstęp między boxami */
-    padding: 20px; /* Większy padding dla całego kontenera */
+:root {
+    --primary: #1e88e5;
+    --primary-dark: #1565c0;
+    --primary-light: #bbdefb;
+    --secondary: #f5f5f5;
+    --success: #4caf50;
+    --warning: #ff9800;
+    --danger: #f44336;
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    --text-tertiary: #9e9e9e;
+    --background: #f9f9f9;
+    --card-background: #ffffff;
+    --border-radius: 12px;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s ease;
 }
 
-/* Pojedyncze zlecenie (karta) */
-div.order {
-    background-color: #ffffff;
+/* Base styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.site-header {
+    background-color: var(--card-background);
+    box-shadow: var(--shadow-sm);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.app-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0;
+    flex-shrink: 0;
+    min-width: 200px;
+}
+
+.main-nav {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: white;
     border: none;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    padding: 16px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    margin-bottom: 20px; /* Dodatkowy margines na wypadek braku siatki */
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: var(--transition);
 }
 
-div.order:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+.nav-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
-/* Zdjęcie zlecenia */
-div.order img {
+.btn-icon {
+    font-size: 1.1em;
+}
+
+/* Main content */
+.main-content {
+    padding: 30px 0;
+}
+
+.orders-section {
+    animation: fadeIn 0.5s ease;
+}
+
+.section-header {
+    display: flex;
+    justify-content: flex-start; /* Zmieniono z 'space-between' na 'flex-start' */
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.section-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Orders grid layout - szersze karty i większe odstępy */
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); /* Zwiększona minimalna szerokość */
+    gap: 40px; /* Zoptymalizowany odstęp między kartami */
+    margin-bottom: 40px;
+    min-height: 200px;
+}
+
+/* Empty state */
+.empty-orders {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    color: var(--text-tertiary);
+}
+
+.empty-orders h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--text-secondary);
+}
+
+.empty-orders p {
+    color: var(--text-tertiary);
+    max-width: 320px;
+}
+
+/* Loading state */
+.loading-container {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Error state */
+.error-container {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.error-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    color: var(--danger);
+}
+
+.retry-button {
+    margin-top: 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.retry-button:hover {
+    background: var(--primary-dark);
+}
+
+/* Date group header - bardziej atrakcyjny */
+.date-group {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    margin: 32px 0 16px;
+    padding: 12px 20px;
+    background: linear-gradient(90deg, var(--primary-light), transparent 80%);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.date-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+}
+
+.date-icon {
+    font-size: 1.2rem;
+    margin-right: 12px;
+    background: white;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm);
+}
+
+.date-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: capitalize;
+}
+
+/* Order card - szersze karty i lepsze dopasowanie */
+.order {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative;
+    min-height: 400px;
     width: 100%;
-    height: auto;
-    border-radius: 6px;
-    margin-top: 12px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    display: block;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Tytuł zlecenia */
-div.order h3 {
-    margin-bottom: 6px;
-    font-size: 18px;
-    color: #343a40;
+.order:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
 }
 
-/* Tekst opisu i adresu */
-div.order p {
-    margin: 6px 0;
-    color: #495057;
-    font-size: 15px;
+.order.processing {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.order.completed {
+    background: #e8f5e9;
+}
+
+.order.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+/* High priority orders */
+.priority-high::before {
+    content: "Priorytetowe";
+    position: absolute;
+    top: 12px;
+    right: -30px;
+    background: var(--warning);
+    color: white;
+    padding: 4px 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transform: rotate(45deg);
+    z-index: 1;
+}
+
+/* Order header - lepsza prezentacja długich adresów */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px 24px;
+    background: linear-gradient(to right, var(--primary-light), #f5f9ff);
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.order-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: flex-start; /* Zmieniono na flex-start dla lepszego wyrównania z ikoną */
+    gap: 8px;
+    color: var(--text-primary);
+    max-width: 80%; /* Zwiększony maksymalny rozmiar */
+    line-height: 1.5;
+    word-break: break-word; /* Zapobiega wychodzeniu długich adresów poza box */
+}
+
+.location-icon {
+    color: var(--primary);
+    margin-top: 3px; /* Delikatne wyrównanie ikony w górę */
+    flex-shrink: 0;
+}
+
+.price-tag {
+    background: var(--primary);
+    color: white;
+    padding: 8px 16px; /* Większy padding */
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-left: 10px; /* Dodatkowy odstęp od adresu */
+    white-space: nowrap; /* Zapobiega łamaniu tekstu ceny */
+}
+
+/* Order body - zwiększone odstępy */
+.order-body {
+    padding: 24px 28px;
+}
+
+/* Info columns layout - poprawiony układ dla lepszej czytelności */
+.info-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px; /* Zwiększony odstęp */
+    margin-bottom: 30px;
+}
+
+.info-item {
+    display: flex;
+    gap: 14px; /* Zwiększony odstęp */
+    margin-bottom: 20px; /* Zwiększony odstęp */
+}
+
+.info-icon {
+    background: #f0f7ff;
+    width: 44px; /* Większa ikona */
+    height: 44px; /* Większa ikona */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Zapobiega wylewaniu się treści */
+}
+
+.info-label {
+    font-size: 0.85rem; /* Nieco większa etykieta */
+    color: var(--text-tertiary);
+    margin-bottom: 4px; /* Większy odstęp */
+    font-weight: 500;
+}
+
+.info-value {
+    font-weight: 500;
+    color: var(--text-primary);
+    word-break: break-word; /* Zapobiega wylewaniu się długich wartości */
     line-height: 1.4;
 }
 
-/* Kontener przycisków - przyciski wyśrodkowane */
-.order-buttons {
-    display: flex; /* Użycie flexboxa */
-    justify-content: center; /* Wyśrodkowanie przycisków */
-    gap: 10px; /* Odstęp między przyciskami */
-    margin-top: 15px; /* Większy odstęp od treści */
+/* Description box - więcej przestrzeni i lepsza czytelność */
+.description-box {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 24px; /* Zwiększony padding */
+    margin-bottom: 30px;
 }
 
-/* Przyciski w zleceniach */
-div.order button {
+.info-header {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Zwiększony odstęp */
+    margin-bottom: 14px; /* Zwiększony odstęp */
+}
+
+.info-header h4 {
     margin: 0;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    font-size: 1.1rem; /* Większa czcionka */
+    font-weight: 600;
+    color: var(--text-primary);
 }
 
-div.order button:hover {
-    background-color: #0056b3;
+.description-box p {
+    margin: 8px 0 0;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 1rem; /* Większa czcionka dla lepszej czytelności */
+    word-break: break-word; /* Zapobiega wylewaniu się długich opisów */
 }
-#ordersList .empty-orders {
-    grid-column: 1 / -1;
+
+/* Billing info - więcej przestrzeni */
+.billing-info {
+    background: #fff8e1;
+    border-radius: 8px;
+    padding: 24px; /* Zwiększony padding */
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-left: 3px solid #ffc107;
+}
+
+.billing-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 30px; /* Zwiększone odstępy */
+    margin-top: 14px;
+}
+
+.info-row {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem; /* Nieco większa czcionka */
+    word-break: break-word; /* Zapobiega wylewaniu się treści */
+}
+
+.info-row span {
+    font-size: 0.85rem; /* Nieco większa etykieta */
+    color: var(--text-tertiary);
+    margin-bottom: 4px; /* Zwiększony odstęp */
+    font-weight: 500;
+}
+
+/* Photo container */
+.photo-container {
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.photo-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.photo-container:hover img {
+    transform: scale(1.03);
+}
+
+/* AI comment section - poprawiona czytelność */
+.ai-comment-section {
+    margin: 30px 0;
+}
+
+.toggle-response {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: #f0f7ff;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 20px; /* Zwiększony padding pionowy */
+    font-weight: 500;
+    color: var(--primary);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1rem;
+}
+
+.toggle-response:hover {
+    background: #e3f2fd;
+}
+
+.comment-icon {
+    margin-right: 8px;
+}
+
+.comment-text {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.toggle-icon {
+    font-size: 0.8rem;
+}
+
+.client-response {
+    background: #f0f7ff;
+    margin-top: 1px;
+    padding: 0 16px;
+    border-radius: 0 0 8px 8px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.client-response.visible {
+    padding: 20px; /* Zwiększony padding */
+    max-height: 600px; /* Zwiększona maksymalna wysokość */
+    opacity: 1;
+    line-height: 1.6;
+    word-break: break-word; /* Zapobiega wylewaniu się długiego tekstu */
+}
+
+/* Action buttons - poprawione przyciski */
+.action-buttons {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.action-buttons button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.complete-btn {
+    background: var(--success);
+    color: white;
+}
+
+.complete-btn:hover {
+    background: #388e3c;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    background: #f5f5f5;
+    color: var(--text-secondary);
+}
+
+.delete-btn:hover {
+    background: #e0e0e0;
+    color: var(--danger);
+    transform: translateY(-2px);
+}
+
+/* Owner buttons */
+.owner-button {
+    background: var(--success);
+    display: none; /* Domyślnie ukryte, pokazywane przez JS */
+}
+
+.owner-button:hover {
+    background: #2e7d32;
+}
+
+/* Footer */
+.site-footer {
     text-align: center;
-    font-size: 20px;
-    color: #888;
-    margin: 60px 0 30px 0;
+    padding: 20px 0;
+    color: var(--text-tertiary);
+    font-size: 0.9rem;
 }
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive styles - zaktualizowane dla zachowania czytelności */
+@media (min-width: 1400px) {
+    .orders-grid {
+        grid-template-columns: repeat(2, 1fr); /* Zmieniono na 2 kolumny zamiast 3 dla lepszej czytelności */
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1399px) {
+    .orders-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px; /* Mniejszy odstęp na średnich ekranach */
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    /* Nagłówek na urządzeniach mobilnych */
+    .site-header {
+        padding: 12px 0;
+    }
+
+    .app-title {
+        font-size: 1.3rem;
+        min-width: 0;
+    }
+
+    .main-nav {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    
+    .nav-button {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 12px;
+    }
+
+    /* Karty zleceń na urządzeniach mobilnych */
+    .orders-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 0;
+    }
+    
+    .order {
+        min-height: 0;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 15px;
+    }
+    
+    /* Zwiększ obszar dotyku dla przycisków */
+    .action-buttons button,
+    .toggle-response {
+        padding: 16px;
+        min-height: 48px;
+        font-size: 1rem;
+    }
+    
+    .view-btn {
+        padding: 12px;
+        min-width: 48px;
+        min-height: 48px;
+    }
+    
+    /* Poprawa czytelności i układu treści */
+    .order-header {
+        padding: 16px;
+    }
+    
+    .order-header h3 {
+        font-size: 1.1rem;
+        max-width: 100%;
+        flex-wrap: wrap; /* Pozwala na zawijanie długich adresów */
+    }
+    
+    .order-body {
+        padding: 16px;
+    }
+    
+    .info-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .info-value {
+        font-size: 1rem;
+    }
+    
+    /* Poprawa responsywności kolumn informacji */
+    .info-columns {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .info-item {
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    
+    .info-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    /* Poprawki dla lepszej czytelności na małych ekranach */
+    .description-box, 
+    .billing-info {
+        padding: 16px;
+    }
+    
+    /* Lepszy wygląd dla komentarzy AI na urządzeniach mobilnych */
+    .ai-comment-section {
+        margin: 20px 0;
+    }
+    
+    .client-response.visible {
+        max-height: 1000px; /* Większa wysokość na mniejszych ekranach */
+    }
+}
+
+/* Dodatkowe optymalizacje dla bardzo małych ekranów */
+@media (max-width: 375px) {
+    .order-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .price-tag {
+        align-self: flex-start;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+
+/* Usprawnienia dotykowe */
+@media (hover: none) {
+    /* Większe obszary dotyku dla elementów interaktywnych */
+    .nav-button,
+    .action-buttons button,
+    .toggle-response,
+    .view-btn {
+        transition: background-color 0.3s ease;
+    }
+    
+    .order:hover {
+        transform: none;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .order:active {
+        background-color: #f8f9fa;
+    }
+    
+    .action-buttons button:active {
+        transform: scale(0.98);
+    }
+    
+    /* Zwiększ kontrast dla lepszej widoczności */
+    .info-label {
+        color: var(--text-secondary);
+    }
+    
+    /* Poprawa przewijania dla treści na urządzeniach dotykowych */
+    .description-box {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Poprawa odległości i wielkości przycisków */
+@media (max-width: 768px) {
+    .action-buttons button {
+        height: auto;
+        min-height: 52px;
+    }
+    
+    /* Zapewnienie właściwej widoczności stanów aktywnych */
+    .action-buttons button:active {
+        opacity: 0.8;
+    }
+    
+    /* Poprawiona widoczność ikon w przyciskach */
+    .btn-icon {
+        font-size: 1.2em;
+    }
+    
+    /* Poprawki dla etykiet dat */
+    .date-group {
+        padding: 14px 16px;
+        margin: 24px 0 16px;
+    }
+    
+    /* Poprawki dla pustego stanu */
+    .empty-orders {
+        padding: 40px 20px;
+    }
+    
+    /* Poprawki dla stanu ładowania */
+    .loading-container {
+        padding: 40px 20px;
+    }
+    
+    /* Optymalizacja miejsca w opisach */
+    .description-box p {
+        line-height: 1.5;
+    }
+}
+
+/* Poprawiona orientacja pozioma */
+@media (max-height: 500px) and (orientation: landscape) {
+    .header-content {
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    .main-nav {
+        width: auto;
+        margin-top: 0;
+    }
+    
+    .orders-grid {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+    
+    .order {
+        min-height: 380px;
+    }
+    
+    .action-buttons {
+        flex-direction: row;
+    }
+}
+

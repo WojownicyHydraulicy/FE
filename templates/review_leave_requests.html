@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Zarządzania Zleceniami</title>
+    <title>Zatwierdzanie Wniosków Urlopowych</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/orders.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leave_requests.css') }}">
 </head>
 <body>
     <header class="site-header">
         <div class="container">
             <div class="header-content">
-                <h1 class="app-title">Panel Zarządzania</h1>
+                <h1 class="app-title">Zatwierdzanie Wniosków</h1>
                 <nav class="main-nav">
                     <a href="/" class="home-button">
                         <span class="btn-icon">🏠</span>
@@ -22,17 +22,13 @@
                         <span class="hamburger-icon"></span>
                     </button>
                     <div class="menu-items">
+                        <a href="/orders_panel" class="nav-button">
+                            <span class="btn-icon">📋</span>
+                            <span>Panel Zleceń</span>
+                        </a>
                         <a href="/leave_requests" class="nav-button">
                             <span class="btn-icon">📅</span>
                             <span>Moje wnioski</span>
-                        </a>
-                        <a href="/review_leave_requests" class="nav-button owner-button">
-                            <span class="btn-icon">✓</span>
-                            <span>Wnioski do akceptacji</span>
-                        </a>
-                        <a href="/edit_orders" class="nav-button owner-button">
-                            <span class="btn-icon">✏️</span>
-                            <span>Edycja zleceń</span>
                         </a>
                         <a href="/orders_on_addresses" class="nav-button">
                             <span class="btn-icon">🗄️</span>
@@ -46,16 +42,17 @@
 
     <main class="main-content">
         <div class="container">
-            <div id="mainContent" class="orders-section" style="display:none;">
-                <div class="section-header">
-                    <div class="decorated-heading">
-                        <div class="heading-icon">📋</div>
-                        <h2>Aktywne Zlecenia</h2>
-                    </div>
-                    <!-- Usunięto przyciski wyboru widoku (grid/list) -->
+            <div class="leave-review-section">
+                <div class="decorated-heading">
+                    <div class="heading-icon">✓</div>
+                    <h2>Oczekujące wnioski urlopowe</h2>
                 </div>
-                <div id="ordersList" class="orders-grid">
-                    <!-- Tutaj będą ładowane zlecenia -->
+                
+                <div id="pendingRequests" class="requests-container">
+                    <div class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <p>Ładowanie wniosków...</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,6 +65,6 @@
     </footer>
 
     <script src="{{ url_for('static', filename='js/hamburger-menu.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/orders.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/review_leave_requests.js') }}"></script>
 </body>
 </html>

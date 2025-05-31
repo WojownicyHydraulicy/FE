@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edycja Zleceń</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_orders.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="app-title">Edycja Zleceń</h1>
+                <nav class="main-nav">
+                    <a href="/" class="home-button">
+                        <span class="btn-icon">🏠</span>
+                        <span>Strona główna</span>
+                    </a>
+                    <button class="hamburger-button">
+                        <span class="hamburger-icon"></span>
+                    </button>
+                    <div class="menu-items">
+                        <a href="/orders_panel" class="nav-button">
+                            <span class="btn-icon">📋</span>
+                            <span>Panel Zleceń</span>
+                        </a>
+                        <a href="/leave_requests" class="nav-button">
+                            <span class="btn-icon">📅</span>
+                            <span>Moje wnioski</span>
+                        </a>
+                        <a href="/review_leave_requests" class="nav-button owner-button">
+                            <span class="btn-icon">✓</span>
+                            <span>Wnioski do akceptacji</span>
+                        </a>
+                        <a href="/orders_on_addresses" class="nav-button">
+                            <span class="btn-icon">🗄️</span>
+                            <span>Archiwum zakończonych zleceń</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="edit-section">
+                <div class="decorated-heading">
+                    <div class="heading-icon">✏️</div>
+                    <h2>Edycja Zleceń</h2>
+                </div>
+                
+                <div class="order-selection">
+                    <label for="orderSelect">Wybierz zlecenie do edycji:</label>
+                    <select id="orderSelect">
+                        <option value="">Wybierz zlecenie...</option>
+                    </select>
+                </div>
+
+                <div id="orderDetails" class="order-details-container" style="display: none;">
+                    <div class="order-form-container">
+                        <form id="editOrderForm">
+                            <input type="hidden" id="orderId" name="order_id">
+                            
+                            <div class="form-section">
+                                <h3 class="section-subtitle">Dane podstawowe</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="name">Imię i nazwisko</label>
+                                        <input type="text" id="name" name="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="telephone">Telefon</label>
+                                        <input type="text" id="telephone" name="telephone">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" id="email" name="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="urgency">Pilność</label>
+                                        <select id="urgency" name="urgency">
+                                            <option value="Niski priorytet">Niski priorytet</option>
+                                            <option value="Pilne">Pilne</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3 class="section-subtitle">Adres</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="city">Miasto</label>
+                                        <input type="text" id="city" name="city">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="street">Ulica</label>
+                                        <input type="text" id="street" name="street">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="house_nr">Numer domu</label>
+                                        <input type="text" id="house_nr" name="house_nr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="post_code">Kod pocztowy</label>
+                                        <input type="text" id="post_code" name="post_code">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3 class="section-subtitle">Opis zlecenia</h3>
+                                <div class="form-group">
+                                    <label for="description">Opis</label>
+                                    <textarea id="description" name="description" rows="4"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3 class="section-subtitle">Płatność i dokumenty</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="payment_method">Metoda płatności</label>
+                                        <select id="payment_method" name="payment_method">
+                                            <option value="Karta">Karta</option>
+                                            <option value="Gotówka">Gotówka</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sales_document">Dokument sprzedaży</label>
+                                        <select id="sales_document" name="sales_document">
+                                            <option value="Paragon">Paragon</option>
+                                            <option value="Faktura">Faktura</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div id="invoiceFields" style="display:none;">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="billing_name">Nazwa firmy</label>
+                                            <input type="text" id="billing_name" name="billing_name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="billing_tax_id">NIP</label>
+                                            <input type="text" id="billing_tax_id" name="billing_tax_id">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="billing_address">Adres</label>
+                                            <input type="text" id="billing_address" name="billing_address">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="billing_city">Miejscowość</label>
+                                            <input type="text" id="billing_city" name="billing_city">
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="billing_postcode">Kod pocztowy</label>
+                                            <input type="text" id="billing_postcode" name="billing_postcode">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="billing_country">Kraj</label>
+                                            <input type="text" id="billing_country" name="billing_country">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="billing_phone">Telefon do faktury</label>
+                                        <input type="text" id="billing_phone" name="billing_phone">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h3 class="section-subtitle">Przypisanie i wycena</h3>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="assignedTo">Przypisz do pracownika</label>
+                                        <select id="assignedTo" name="assigned_to">
+                                            <option value="">Wybierz pracownika...</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="order_status">Status zlecenia</label>
+                                        <select id="order_status" name="order_status">
+                                            <option value="Ready to assign">Nowe</option>
+                                            <option value="In Progress">W trakcie</option>
+                                            <option value="Completed">Zakończone</option>
+                                            <option value="Deleted">Anulowane</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="appointment_date">Data wizyty</label>
+                                        <input type="date" id="appointment_date" name="appointment_date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="price">Cena (PLN)</label>
+                                        <input type="number" id="price" name="price" step="0.01" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="submit-btn">Zapisz zmiany</button>
+                                <button type="button" class="cancel-btn" id="cancelBtn">Anuluj</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="media-section">
+                        <div class="photo-container" id="photoContainer">
+                            <h3>Zdjęcie zlecenia</h3>
+                            <div id="orderPhoto">
+                                <div class="no-photo">Brak zdjęcia</div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-comment">
+                            <h3>Komentarz AI</h3>
+                            <div id="aiComment" class="ai-comment-box">
+                                <div class="no-comment">Brak komentarza AI</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="statusMessages" class="status-container"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Hydropol Spłuczka z. o. o</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/hamburger-menu.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/edit_orders.js') }}"></script>
+</body>
+</html>

@@ -22,6 +22,18 @@ def orders_panel():
 def orders_on_addresses_page():
     return render_template("orders_on_addresses.html")
 
+# Nowe trasy dla zarządzania wnioskami urlopowymi
+@app.route("/leave_requests/")
+def leave_requests_page():
+    return render_template("leave_requests.html")
+
+@app.route("/review_leave_requests/")
+def review_leave_requests_page():
+    return render_template("review_leave_requests.html")
+
+@app.route("/edit_orders/")
+def edit_orders_page():
+    return render_template("edit_orders.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
