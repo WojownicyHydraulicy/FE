@@ -257,14 +257,35 @@ function initEventListeners() {
     // Toggle AI comments
     document.querySelectorAll(".toggle-response").forEach(btn => {
         btn.addEventListener("click", toggleAIComment);
+        
+        // Dodajemy obsługę dotyku z lepszym feedbackiem
+        btn.addEventListener("touchstart", function() {
+            this.classList.add("touch-active");
+        }, { passive: true });
+        
+        btn.addEventListener("touchend", function() {
+            this.classList.remove("touch-active");
+        }, { passive: true });
     });
     
     // Action buttons (complete/delete)
     document.querySelectorAll("[data-action]").forEach(btn => {
         btn.addEventListener("click", handleOrderAction);
+        
+        // Dodajemy obsługę dotyku z lepszym feedbackiem
+        btn.addEventListener("touchstart", function() {
+            this.classList.add("touch-active");
+        }, { passive: true });
+        
+        btn.addEventListener("touchend", function() {
+            this.classList.remove("touch-active");
+        }, { passive: true });
     });
     
-    // Usunięto obsługę przycisków wyboru widoku (grid/list)
+    // Dodajemy obsługę gestów przesunięcia na kartach zleceń (swipe)
+    if ('ontouchstart' in window) {
+        setupSwipeActions();
+    }
 }
 
 // Toggle AI comment visibility
@@ -301,6 +322,68 @@ function handleOrderAction(event) {
     if (confirm(confirmMessages[action])) {
         finishOrder(orderId, actionMap[action]);
     }
+}
+
+// Dodajemy obsługę gestów przesunięcia (swipe) na mobilnych urządzeniach
+function setupSwipeActions() {
+    const orders = document.querySelectorAll('.order');
+    
+    orders.forEach(order => {
+        let startX, startY, distX, distY;
+        const threshold = 100; // minimalny dystans przesunięcia
+        
+        order.addEventListener('touchstart', function(e) {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+        
+        order.addEventListener('touchmove', function(e) {
+            if (!startX || !startY) return;
+            
+            distX = e.touches[0].clientX - startX;
+            distY = e.touches[0].clientY - startY;
+            
+            // Jeśli przesunięcie pionowe jest większe, pozwalamy na normalne przewijanie
+            if (Math.abs(distY) > Math.abs(distX)) return;
+            
+            // W przeciwnym razie zapobiegamy domyślnemu przewijaniu
+            if (Math.abs(distX) > 10) e.preventDefault();
+        }, { passive: false });
+        
+        order.addEventListener('touchend', function(e) {
+            if (!startX || !startY) return;
+            
+            // Jeśli przesunięcie w lewo jest wystarczająco duże
+            if (distX < -threshold) {
+                // Znajdź przycisk "Zakończ" i symuluj kliknięcie
+                const completeBtn = order.querySelector('.complete-btn');
+                if (completeBtn) {
+                    order.classList.add('swipe-left-animation');
+                    setTimeout(() => {
+                        completeBtn.click();
+                    }, 300);
+                }
+            }
+            
+            // Jeśli przesunięcie w prawo jest wystarczająco duże
+            if (distX > threshold) {
+                // Znajdź przycisk "Usuń" i symuluj kliknięcie
+                const deleteBtn = order.querySelector('.delete-btn');
+                if (deleteBtn) {
+                    order.classList.add('swipe-right-animation');
+                    setTimeout(() => {
+                        deleteBtn.click();
+                    }, 300);
+                }
+            }
+            
+            // Reset wartości
+            startX = null;
+            startY = null;
+            distX = null;
+            distY = null;
+        }, { passive: true });
+    });
 }
 
 // Display error message

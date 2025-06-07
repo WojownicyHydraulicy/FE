@@ -2,25 +2,99 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Zlecenia według adresu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archiwum Zleceń</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/orders_on_addresses.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h2>Wyszukaj zlecenia według adresu</h2>
-        <form id="searchForm" class="search-form">
-            <label>Miasto (wymagane): <input type="text" name="city" required></label>
-            <label>Ulica: <input type="text" name="street"></label>
-            <label>Kod pocztowy: <input type="text" name="post_code"></label>
-            <label>Numer domu: <input type="text" name="house_nr"></label>
-            <button type="submit" class="btn-primary">Szukaj</button>
-        </form>
-        <p class="centered-back">
-            <a href="/orders_panel" class="back-button">← Powrót do panelu pracownika</a>
-        </p>
-    </div>
-    <div id="searchResults" class="search-results"></div>
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="app-title">Archiwum Zleceń</h1>
+                <nav class="main-nav">
+                    <a href="/" class="home-button">
+                        <span class="btn-icon">🏠</span>
+                        <span>Strona główna</span>
+                    </a>
+                    <button class="hamburger-button">
+                        <span class="hamburger-icon"></span>
+                    </button>
+                    <div class="menu-items">
+                        <a href="/orders_panel" class="nav-button">
+                            <span class="btn-icon">📋</span>
+                            <span>Panel Zleceń</span>
+                        </a>
+                        <a href="/leave_requests" class="nav-button">
+                            <span class="btn-icon">📅</span>
+                            <span>Moje wnioski</span>
+                        </a>
+                        <a href="/review_leave_requests" class="nav-button owner-button">
+                            <span class="btn-icon">✓</span>
+                            <span>Wnioski do akceptacji</span>
+                        </a>
+                        <a href="/edit_orders" class="nav-button owner-button">
+                            <span class="btn-icon">✏️</span>
+                            <span>Edycja zleceń</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="archive-section">
+                <div class="decorated-heading">
+                    <div class="heading-icon">🗄️</div>
+                    <h2>Wyszukaj zlecenia</h2>
+                </div>
+                <p class="section-subtitle">Wprowadź dane adresowe aby znaleźć zlecenia</p>
+                
+                <div class="search-container">
+                    <form id="searchForm" class="search-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">Miasto <span class="required">*</span></label>
+                                <input type="text" name="city" id="city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="street">Ulica</label>
+                                <input type="text" name="street" id="street">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="post_code">Kod pocztowy</label>
+                                <input type="text" name="post_code" id="post_code">
+                            </div>
+                            <div class="form-group">
+                                <label for="house_nr">Numer domu</label>
+                                <input type="text" name="house_nr" id="house_nr">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="submit-btn">
+                                <span class="btn-icon">🔍</span> Szukaj
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div id="searchResults" class="search-results"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Hydropol Spłuczka z. o. o</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/hamburger-menu.js') }}"></script>
     <script src="{{ url_for('static', filename='js/orders_on_addresses.js') }}"></script>
 </body>
 </html>

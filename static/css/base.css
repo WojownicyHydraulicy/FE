@@ -111,7 +111,7 @@ body {
     color: white;
 }
 
-/* Hamburger Menu - poprawiona ikona */
+/* Poprawione Hamburger Menu - ikona i kontener */
 .hamburger-button {
     display: flex;
     align-items: center;
@@ -126,12 +126,14 @@ body {
     transition: var(--transition);
     position: relative;
     z-index: 1001;
+    padding: 0; /* Usunięcie wewnętrznego paddingu */
 }
 
 .hamburger-button:hover {
     background: var(--primary-dark);
 }
 
+/* Poprawiona ikona hamburgera */
 .hamburger-icon {
     position: relative;
     width: 20px;
@@ -144,11 +146,12 @@ body {
 .hamburger-icon::after {
     content: '';
     position: absolute;
-    width: 20px;
+    width: 100%; /* Pełna szerokość rodzica */
     height: 2px;
     background: white;
     transition: var(--transition);
-    left: 0; /* Dodane żeby linie były wyrównane do lewej */
+    left: 0; /* Wyrównanie do lewej krawędzi */
+    transform-origin: center; /* Transformacja z centrum */
 }
 
 .hamburger-icon::before {
@@ -159,16 +162,19 @@ body {
     transform: translateY(6px);
 }
 
+/* Poprawione przekształcenie hamburgera w X */
 .hamburger-button.active .hamburger-icon {
     background: transparent;
 }
 
 .hamburger-button.active .hamburger-icon::before {
     transform: rotate(45deg);
+    top: 0; /* Wyśrodkowanie */
 }
 
 .hamburger-button.active .hamburger-icon::after {
     transform: rotate(-45deg);
+    top: 0; /* Wyśrodkowanie */
 }
 
 .menu-items {
@@ -181,13 +187,15 @@ body {
     padding: 16px;
     z-index: 1000;
     min-width: 220px;
-    max-width: 280px; /* Dodane ograniczenie maksymalnej szerokości */
+    max-width: 280px;
     display: none;
     flex-direction: column;
     gap: 12px;
     opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
+    box-sizing: border-box; /* Zapewnia, że padding jest wliczany w szerokość */
+    overflow: hidden; /* Zapobiega wylewaniu się zawartości */
 }
 
 .menu-items.active {
@@ -199,6 +207,11 @@ body {
 .menu-items .nav-button {
     width: 100%;
     justify-content: flex-start;
+    box-sizing: border-box; /* Zapewnia, że padding jest wliczany w szerokość */
+    white-space: nowrap; /* Zapobiega zawijaniu tekstu */
+    overflow: hidden; /* Zapobiega wylewaniu się tekstu */
+    text-overflow: ellipsis; /* Dodaje wielokropek dla zbyt długiego tekstu */
+    margin: 0; /* Usunięcie marginesów */
 }
 
 /* Główny kontener treści */
@@ -419,34 +432,107 @@ a:hover {
 /* Responsive adjustments for hamburger menu */
 @media (max-width: 768px) {
     .hamburger-button {
-        width: 36px;
-        height: 36px;
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+    }
+    
+    .hamburger-icon {
+        width: 22px;
+    }
+    
+    .menu-items {
+        top: 55px;
+        width: 100%;
+        max-width: none;
+        right: 0;
+        left: 0;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        padding: 12px 0;
+        z-index: 2000;
+    }
+    
+    .menu-items .nav-button {
+        padding: 16px 20px;
+        border-radius: 0;
+        font-size: 1rem;
+        justify-content: flex-start;
+        transition: background-color 0.2s ease;
+    }
+    
+    .menu-items .nav-button:active {
+        background-color: #f0f0f0;
+    }
+    
+    .menu-items .nav-button:hover {
+        transform: none;
+        background-color: #f5f5f5;
+    }
+    
+    /* Poprawiona obsługa safe area dla iPhone X i nowszych */
+    .site-header {
+        padding-top: env(safe-area-inset-top, 16px);
+        padding-left: env(safe-area-inset-left, 0);
+        padding-right: env(safe-area-inset-right, 0);
+    }
+    
+    .site-footer {
+        padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+    
+    .menu-items {
+        padding-bottom: env(safe-area-inset-bottom, 12px);
+    }
+    
+    /* Bardziej kompaktowy nagłówek na małych ekranach */
+    .header-content {
+        padding: 8px 0;
+    }
+    
+    .app-title {
+        font-size: 1.3rem;
+    }
+    
+    /* Poprawiony efekt naciśnięcia przycisku */
+    .nav-button:active,
+    .hamburger-button:active,
+    .home-button:active {
+        opacity: 0.7;
+        transform: scale(0.98);
+    }
+}
+
+/* Dodatkowe poprawki dla bardzo małych ekranów */
+@media (max-width: 375px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .app-title {
+        font-size: 1.2rem;
+        min-width: 0;
     }
     
     .home-button {
         padding: 8px 12px;
         font-size: 0.85rem;
     }
-    
-    .menu-items {
-        top: 45px;
-        width: calc(100% - 20px); /* Zmienione z 100vw na szerokość względną */
-        right: 0; /* Zmienione z -20px na 0 */
-        border-radius: 0 0 var(--border-radius) var(--border-radius);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        max-width: none; /* Usunięcie ograniczenia na mobilnych */
-    }
 }
 
-/* Dodane poprawki dla małych ekranów */
-@media (max-width: 480px) {
-    .main-nav {
-        position: relative; /* Dodane dla poprawnego pozycjonowania menu */
+/* Obsługa orientacji poziomej */
+@media (max-height: 500px) and (orientation: landscape) {
+    .menu-items {
+        max-height: 85vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
-    .menu-items {
-        width: 100%; /* Pełna szerokość w ramach nav */
-        left: 0;
-        right: 0;
+    .site-header {
+        position: sticky;
+    }
+    
+    .main-content {
+        padding: 15px 0;
     }
 }

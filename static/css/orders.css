@@ -853,3 +853,148 @@ body {
     }
 }
 
+/* Touch feedback dla elementów interaktywnych */
+.touch-active {
+    opacity: 0.7 !important;
+    transform: scale(0.98) !important;
+}
+
+/* Animacje dla swipe actions */
+.swipe-left-animation {
+    animation: swipeLeft 0.3s ease-out;
+}
+
+.swipe-right-animation {
+    animation: swipeRight 0.3s ease-out;
+}
+
+@keyframes swipeLeft {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100px); }
+}
+
+@keyframes swipeRight {
+    from { transform: translateX(0); }
+    to { transform: translateX(100px); }
+}
+
+/* Poprawiona obsługa gestów dotykowych */
+@media (hover: none) {
+    /* Większe obszary dotyku dla elementów interaktywnych */
+    .nav-button,
+    .action-buttons button,
+    .toggle-response,
+    .view-btn {
+        min-height: 44px; /* Minimum 44px dla iOS */
+        padding: 12px 16px;
+        transition: background-color 0.3s ease;
+    }
+    
+    /* Zmniejszenie efektu hover, który może działać dziwnie na urządzeniach dotykowych */
+    .order:hover {
+        transform: none;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    /* Zwiększenie obszaru dotyku dla przycisków akcji */
+    .action-buttons button {
+        padding: 14px 16px;
+        min-height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Dodatkowy margines między przyciskami dla łatwiejszego trafienia */
+    .action-buttons {
+        gap: 20px;
+    }
+    
+    /* Większy padding dla toggle-response dla łatwiejszego trafienia */
+    .toggle-response {
+        padding: 16px 20px;
+        min-height: 54px;
+    }
+    
+    /* Lepsze stany focus dla nawigacji klawiaturą */
+    .action-buttons button:focus,
+    .toggle-response:focus {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
+}
+
+/* Ulepszone style dla iPhone */
+@media screen and (max-width: 428px) and (-webkit-device-pixel-ratio: 2) {
+    /* Dostosowania dla iPhone */
+    .order-header {
+        padding: 14px;
+    }
+    
+    .order-body {
+        padding: 14px;
+    }
+    
+    /* Poprawka dla notcha w iPhone X i nowszych */
+    .site-header {
+        padding-top: env(safe-area-inset-top);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+    
+    .site-footer {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    /* Dodatkowy padding pod przyciskami dla łatwiejszego trafienia */
+    .action-buttons {
+        margin-bottom: env(safe-area-inset-bottom, 20px);
+    }
+}
+
+/* Zoptymalizowany widok na mniejszych ekranach */
+@media (max-width: 480px) {
+    .orders-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    /* Poprawiona czytelność danych zleceń */
+    .info-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+    }
+    
+    .info-value {
+        font-size: 1.1rem;
+    }
+    
+    /* Lepsza czytelność dla adresu */
+    .order-header h3 {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+    
+    /* Bardziej kompaktowy sposób wyświetlania danych faktury */
+    .billing-details {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Bardziej czytelne przyciski akcji */
+    .action-buttons button {
+        font-size: 1.1rem;
+    }
+    
+    /* Bardziej czytelny toggle dla komentarzy AI */
+    .toggle-response {
+        font-size: 1.05rem;
+    }
+    
+    .client-response.visible {
+        font-size: 1rem;
+        line-height: 1.6;
+        padding: 20px;
+    }
+}
+

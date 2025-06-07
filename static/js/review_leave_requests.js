@@ -62,6 +62,61 @@ function renderPendingRequests(requests) {
         return;
     }
 
+    // Sprawdzenie czy urządzenie jest mobilne
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // Widok karty dla urządzeń mobilnych
+        renderMobileCards(requests, container);
+    } else {
+        // Standardowy widok tabeli dla większych ekranów
+        renderDesktopTable(requests, container);
+    }
+    
+    // Dodanie obsługi przycisków
+    initActionButtons();
+}
+
+// Renderowanie widoku mobilnego jako karty
+function renderMobileCards(requests, container) {
+    const cardsContainer = document.createElement("div");
+    cardsContainer.className = "mobile-requests-cards";
+    
+    requests.forEach(request => {
+        // Formatowanie daty
+        const date = new Date(request.work_date);
+        const formattedDate = date.toLocaleDateString("pl-PL", {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        const card = document.createElement("div");
+        card.className = "request-card";
+        card.innerHTML = `
+            <div class="request-card-header">
+                <div class="request-card-name">${request.worker_name}</div>
+                <div class="request-card-date">${formattedDate}</div>
+            </div>
+            <div class="request-card-reason">
+                <div class="reason-label">Powód:</div>
+                <div class="reason-text">${request.reason}</div>
+            </div>
+            <div class="request-card-actions">
+                <button class="approve-btn" data-id="${request.id}">Zatwierdź</button>
+                <button class="reject-btn" data-id="${request.id}">Odrzuć</button>
+            </div>
+        `;
+        
+        cardsContainer.appendChild(card);
+    });
+    
+    container.appendChild(cardsContainer);
+}
+
+// Renderowanie standardowego widoku tabeli
+function renderDesktopTable(requests, container) {
     // Tworzenie tabeli wniosków
     const table = document.createElement("table");
     table.className = "requests-table";
@@ -98,7 +153,7 @@ function renderPendingRequests(requests) {
         row.innerHTML = `
             <td>${request.worker_name}</td>
             <td>${formattedDate}</td>
-            <td>${request.reason}</td>
+            <td class="reason-cell">${request.reason}</td>
             <td class="action-buttons">
                 <button class="approve-btn" data-id="${request.id}">Zatwierdź</button>
                 <button class="reject-btn" data-id="${request.id}">Odrzuć</button>
@@ -109,21 +164,36 @@ function renderPendingRequests(requests) {
     });
     
     container.appendChild(table);
-    
-    // Dodanie obsługi przycisków
-    initActionButtons();
 }
 
-// Inicjalizacja przycisków akcji
+// Inicjalizacja przycisków akcji z obsługą dotykową
 function initActionButtons() {
     // Przyciski zatwierdzania
     document.querySelectorAll(".approve-btn").forEach(btn => {
         btn.addEventListener("click", (e) => handleReviewAction(e.target.dataset.id, "approve"));
+        
+        // Dodajemy obsługę dotyku z lepszym feedbackiem
+        btn.addEventListener("touchstart", function() {
+            this.classList.add("touch-active");
+        }, { passive: true });
+        
+        btn.addEventListener("touchend", function() {
+            this.classList.remove("touch-active");
+        }, { passive: true });
     });
     
     // Przyciski odrzucania
     document.querySelectorAll(".reject-btn").forEach(btn => {
         btn.addEventListener("click", (e) => handleReviewAction(e.target.dataset.id, "reject"));
+        
+        // Dodajemy obsługę dotyku z lepszym feedbackiem
+        btn.addEventListener("touchstart", function() {
+            this.classList.add("touch-active");
+        }, { passive: true });
+        
+        btn.addEventListener("touchend", function() {
+            this.classList.remove("touch-active");
+        }, { passive: true });
     });
 }
 

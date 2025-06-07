@@ -96,12 +96,29 @@ function populateDateSelect(workingDays) {
 function initFormHandlers() {
     const form = document.getElementById("leaveRequestForm");
     const loadingIndicator = document.getElementById("loadingIndicator");
+    const reasonInput = document.getElementById("reason");
+    const charCounter = document.getElementById("charCounter");
+    
+    // Dodany kod - obsługa licznika znaków
+    reasonInput.addEventListener("input", function() {
+        const maxLength = this.maxLength;
+        const currentLength = this.value.length;
+        charCounter.textContent = `${currentLength}/${maxLength} znaków`;
+        
+        // Dodanie klasy ostrzeżenia gdy zbliżamy się do limitu
+        if (currentLength >= maxLength * 0.8 && currentLength < maxLength) {
+            charCounter.className = "char-counter warning";
+        } else if (currentLength >= maxLength) {
+            charCounter.className = "char-counter error";
+        } else {
+            charCounter.className = "char-counter";
+        }
+    });
     
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         
         const dateSelect = document.getElementById("workDate");
-        const reasonInput = document.getElementById("reason");
         
         // Walidacja
         if (!dateSelect.value) {

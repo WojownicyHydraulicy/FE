@@ -222,42 +222,136 @@
     color: var(--text-secondary);
 }
 
-/* Responsywność */
-@media (max-width: 768px) {
-    .form-container {
-        padding: 0 15px;
-    }
+/* Style dla urządzeń mobilnych */
+.mobile-device .form-group input,
+.mobile-device .form-group select,
+.mobile-device .form-group textarea {
+    font-size: 16px; /* Zapobiega automatycznemu powiększaniu na iOS */
+    padding: 14px;
+    min-height: 24px;
+}
 
-    #orderForm {
-        padding: 24px 20px;
+/* Feedback dotykowy */
+.touch-active {
+    opacity: 0.7 !important;
+    transform: scale(0.98) !important;
+}
+
+/* Ulepszenia dla iOS */
+@supports (-webkit-touch-callout: none) {
+    /* Poprawki dla notcha i home bar */
+    .form-container {
+        padding-left: env(safe-area-inset-left, 0);
+        padding-right: env(safe-area-inset-right, 0);
+        padding-bottom: env(safe-area-inset-bottom, 20px);
     }
     
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-        padding: 12px;
-        font-size: 16px;
+    #orderForm button[type="submit"] {
+        margin-bottom: env(safe-area-inset-bottom, 0);
     }
     
+    /* Poprawki dla scrollowania */
     .modal-box {
-        padding: 30px 20px;
-        max-width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .modal-comment {
+        -webkit-overflow-scrolling: touch;
     }
 }
 
-@media (max-width: 480px) {
+/* Udoskonalenia dla urządzeń mobilnych */
+@media (max-width: 768px) {
+    .form-container {
+        padding: 0 10px;
+    }
+
     #orderForm {
-        padding: 20px 16px;
+        padding: 20px 15px;
+        border-radius: 10px;
+    }
+    
+    /* Większe przyciski dla łatwiejszej interakcji */
+    #orderForm button[type="submit"],
+    #prevBtn, #nextBtn {
+        min-height: 54px;
+        font-size: 1.1rem;
+        padding: 14px 20px;
+    }
+    
+    /* Większe pola formularza */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 14px;
+        min-height: 24px;
+        border-radius: 8px;
+    }
+    
+    /* Bardziej widoczne etykiety */
+    .form-group label {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+    
+    /* Poprawka dla modali */
+    .modal-box {
+        width: 90%;
+        padding: 25px 15px;
+        max-height: 85vh;
+        overflow-y: auto;
     }
     
     .modal-success h2 {
         font-size: 1.5rem;
     }
     
-    .modal-price {
-        font-size: 1.3rem;
-        padding: 10px 16px;
+    .modal-price, .modal-appointment {
         width: 100%;
         box-sizing: border-box;
+        font-size: 1rem;
+    }
+    
+    .modal-comment {
+        max-height: 150px;
+    }
+    
+    .modal-box button {
+        min-height: 54px;
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+/* Dodatkowe optymalizacje dla bardzo małych ekranów */
+@media (max-width: 375px) {
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        font-size: 0.95rem;
+    }
+    
+    #orderForm {
+        padding: 15px 12px;
+    }
+    
+    .modal-box {
+        padding: 20px 12px;
+    }
+}
+
+/* Optymalizacja dla orientacji poziomej */
+@media (max-height: 500px) and (orientation: landscape) {
+    #orderForm {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+    
+    .modal-box {
+        max-height: 90vh;
     }
 }
