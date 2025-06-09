@@ -13,30 +13,37 @@
         <div class="container">
             <div class="header-content">
                 <h1 class="app-title">Edycja Zleceń</h1>
-                <nav class="main-nav">
-                    <a href="/" class="home-button">
-                        <span class="btn-icon">🏠</span>
-                        <span>Strona główna</span>
-                    </a>
-                    <button class="hamburger-button">
+                
+                <div class="header-logo">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+                </div>
+                
+                 <nav class="main-nav">
+                    <button id="hamburgerBtn" class="hamburger-button">
                         <span class="hamburger-icon"></span>
                     </button>
-                    <div class="menu-items">
-                        <a href="/orders_panel" class="nav-button">
-                            <span class="btn-icon">📋</span>
-                            <span>Panel Zleceń</span>
+                    
+                    <div id="menuItems" class="menu-items">
+                        <a href="/orders_panel/" class="nav-button">
+                        <span class="btn-icon">🏠</span> Strona główna
                         </a>
-                        <a href="/leave_requests" class="nav-button">
-                            <span class="btn-icon">📅</span>
-                            <span>Moje wnioski</span>
+                        <a href="/orders_panel/" class="nav-button">
+                            <span class="btn-icon">📋</span> Panel Zleceń
                         </a>
-                        <a href="/review_leave_requests" class="nav-button owner-button">
-                            <span class="btn-icon">✓</span>
-                            <span>Wnioski do akceptacji</span>
+                        <a href="/orders_on_addresses/" class="nav-button">
+                            <span class="btn-icon">🔍</span> Archiwum zleceń
                         </a>
-                        <a href="/orders_on_addresses" class="nav-button">
-                            <span class="btn-icon">🗄️</span>
-                            <span>Archiwum zleceń</span>
+                        <a href="/leave_requests/" class="nav-button">
+                            <span class="btn-icon">📅</span> Wnioski urlopowe
+                        </a>
+                        <a href="/review_leave_requests/" class="nav-button owner-button">
+                            <span class="btn-icon">✓</span> Wnioski do akceptacji
+                        </a>
+                        <a href="/edit_orders/" class="nav-button owner-button">
+                            <span class="btn-icon">✏️</span> Edycja zleceń
+                        </a>
+                        <a href="/admin_panel/" class="nav-button owner-button">
+                            <span class="btn-icon">👥</span> Zarządzanie użytkownikami
                         </a>
                     </div>
                 </nav>

@@ -2,52 +2,96 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logowanie</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-</head>    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Logowanie - System Zarządzania Zleceniami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
 <body>
-    <header class="site-header">
-        <div class="container">
-            <div class="header-content">
-                <h1 class="app-title">Panel Logowania</h1>
-                <nav class="main-nav">
-                    <a href="/" class="nav-button">
-                        <span class="btn-icon">🏠</span>
-                        <span>Strona główna</span>
-                    </a>
-                </nav>
+    <div class="auth-container" id="loginContainer">
+        <div class="centered-logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo-image-centered">
+        </div>
+        
+        <h1 class="auth-title">Logowanie</h1>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Wprowadź adres email" required autocomplete="email">
             </div>
-        </div>
-    </header>
-
-    <main class="main-content">
-        <div class="container">
-            <div class="login-container">
-                <form id="loginForm">
-                    <h2>Podaj token dostępowy</h2>
-                    <div class="form-group">
-                        <label for="token">Token:</label>
-                        <input type="text" id="token" required>
-                    </div>
-                    <button type="submit">Zaloguj</button>
-                    <div id="loginError" class="error-message"></div>
-                </form>
-                <div class="login-footer">
-                    <a href="/" class="back-link">← Powrót do składania zamówień</a>
-                </div>
+            
+            <div class="form-group">
+                <label for="password">Hasło</label>
+                <input type="password" id="password" name="password" placeholder="Wprowadź hasło" required autocomplete="current-password">
             </div>
+            
+            <div id="loginError" class="error-message" style="display: none;"></div>
+            
+            <button type="submit" class="auth-button">Zaloguj się</button>
+        </form>
+        
+        <div class="auth-footer">
+            Nie masz konta? <a href="#" id="showRegister" class="auth-link">Zarejestruj się</a>
         </div>
-    </main>
-
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2025 Hydropol Spłuczka z. o. o</p>
+    </div>
+    
+    <div class="auth-container" id="registerContainer">
+        <div class="centered-logo">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo-image-centered">
         </div>
-    </footer>
-
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+        
+        <h1 class="auth-title">Rejestracja</h1>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="username">Nazwa użytkownika</label>
+                <input type="text" id="username" name="username" placeholder="Wprowadź nazwę użytkownika" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="firstName">Imię</label>
+                <input type="text" id="firstName" name="firstName" placeholder="Wprowadź imię" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="lastName">Nazwisko</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Wprowadź nazwisko" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="city">Miasto pracy</label>
+                <input type="text" id="city" name="city" placeholder="Wprowadź miasto pracy">
+            </div>
+            
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" name="email" placeholder="Wprowadź adres email" required autocomplete="email">
+            </div>
+            
+            <div class="form-group">
+                <label for="registerPassword">Hasło</label>
+                <input type="password" id="registerPassword" name="password" placeholder="Wprowadź hasło" required autocomplete="new-password">
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Potwierdź hasło</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Wprowadź ponownie hasło" required autocomplete="new-password">
+            </div>
+            
+            <div id="registerError" class="error-message" style="display: none;"></div>
+            <div id="registerSuccess" class="success-message"></div>
+            
+            <button type="submit" class="auth-button">Zarejestruj się</button>
+        </form>
+        
+        <div class="auth-footer">
+            Masz już konto? <a href="#" id="showLogin" class="auth-link">Zaloguj się</a>
+        </div>
+    </div>
+    
+    <script src="/static/js/login.js"></script>
 </body>
 </html>

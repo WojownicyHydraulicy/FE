@@ -26,6 +26,7 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
+    font-size: 16px;
 }
 
 .container {
@@ -61,36 +62,6 @@ body {
     min-width: 200px;
 }
 
-.main-nav {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-}
-
-.nav-button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: var(--transition);
-}
-
-.nav-button:hover {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-}
-
-.btn-icon {
-    font-size: 1.1em;
-}
-
 /* Main content */
 .main-content {
     padding: 30px 0;
@@ -108,7 +79,7 @@ body {
 }
 
 .section-header h2 {
-    font-size: 1.8rem;
+    font-size: 2rem; /* Increased from 1.8rem */
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
@@ -319,7 +290,7 @@ body {
 }
 
 .order-header h3 {
-    font-size: 1.2rem;
+    font-size: 1.3rem; /* Increased from 1.2rem */
     font-weight: 600;
     margin: 0;
     display: flex;
@@ -387,7 +358,7 @@ body {
 }
 
 .info-label {
-    font-size: 0.85rem; /* Nieco większa etykieta */
+    font-size: 0.9rem; /* Increased from 0.85rem */
     color: var(--text-tertiary);
     margin-bottom: 4px; /* Większy odstęp */
     font-weight: 500;
@@ -398,6 +369,7 @@ body {
     color: var(--text-primary);
     word-break: break-word; /* Zapobiega wylewaniu się długich wartości */
     line-height: 1.4;
+    font-size: 1.05rem; /* Added explicit font size */
 }
 
 /* Description box - więcej przestrzeni i lepsza czytelność */
@@ -426,7 +398,7 @@ body {
     margin: 8px 0 0;
     color: var(--text-secondary);
     line-height: 1.6;
-    font-size: 1rem; /* Większa czcionka dla lepszej czytelności */
+    font-size: 1.05rem; /* Increased from 1rem */
     word-break: break-word; /* Zapobiega wylewaniu się długich opisów */
 }
 
@@ -554,7 +526,7 @@ body {
     border: none;
     border-radius: 8px;
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 1.05rem; /* Increased from 1rem */
     cursor: pointer;
     transition: var(--transition);
 }
@@ -635,18 +607,6 @@ body {
     .app-title {
         font-size: 1.3rem;
         min-width: 0;
-    }
-
-    .main-nav {
-        width: 100%;
-        justify-content: space-between;
-        margin-top: 10px;
-    }
-    
-    .nav-button {
-        flex: 1;
-        justify-content: center;
-        padding: 10px 12px;
     }
 
     /* Karty zleceń na urządzeniach mobilnych */

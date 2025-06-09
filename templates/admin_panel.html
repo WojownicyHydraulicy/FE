@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Panel administracyjny - System Zarządzania Zleceniami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/admin_panel.css">
+</head>
+<body>
+    <!-- Nagłówek strony -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="app-title">Panel administracyjny</h1>
+                
+                <div class="header-logo">
+                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+                </div>
+                <nav class="main-nav">
+                    <button id="hamburgerBtn" class="hamburger-button">
+                        <span class="hamburger-icon"></span>
+                    </button>
+                    
+                    <div id="menuItems" class="menu-items">
+                        <a href="/orders_panel/" class="nav-button">
+                        <span class="btn-icon">🏠</span> Strona główna
+                        </a>
+                        <a href="/orders_panel/" class="nav-button">
+                            <span class="btn-icon">📋</span> Panel Zleceń
+                        </a>
+                        <a href="/orders_on_addresses/" class="nav-button">
+                            <span class="btn-icon">🔍</span> Archiwum zleceń
+                        </a>
+                        <a href="/leave_requests/" class="nav-button">
+                            <span class="btn-icon">📅</span> Wnioski urlopowe
+                        </a>
+                        <a href="/review_leave_requests/" class="nav-button owner-button">
+                            <span class="btn-icon">✓</span> Wnioski do akceptacji
+                        </a>
+                        <a href="/edit_orders/" class="nav-button owner-button">
+                            <span class="btn-icon">✏️</span> Edycja zleceń
+                        </a>
+                        <a href="/admin_panel/" class="nav-button owner-button">
+                            <span class="btn-icon">👥</span> Zarządzanie użytkownikami
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Główna treść strony -->
+    <main class="main-content">
+        <div class="container">
+            <div class="users-section">
+                <div class="section-header">
+                    <h2>Zarządzanie użytkownikami</h2>
+                </div>
+                
+                <div id="accessDenied" class="access-denied" style="display: none;">
+                    <div class="error-icon">⚠️</div>
+                    <h3>Brak dostępu</h3>
+                    <p>Tylko właściciel (OWNER) ma dostęp do tego panelu.</p>
+                    <a href="/orders_panel/" class="return-link">Powrót do zleceń</a>
+                </div>
+                
+                <div id="usersContainer" class="users-container" style="display: none;">
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="Szukaj użytkownika...">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="all">Wszyscy</button>
+                            <button class="filter-btn" data-filter="OWNER">Właściciele</button>
+                            <button class="filter-btn" data-filter="WORKER">Pracownicy</button>
+                            <button class="filter-btn" data-filter="USER">Użytkownicy</button>
+                        </div>
+                    </div>
+                    
+                    <div id="loadingUsers" class="loading-container">
+                        <div class="loading-spinner"></div>
+                        <p>Ładowanie użytkowników...</p>
+                    </div>
+                    
+                    <div id="usersError" class="error-container" style="display: none;">
+                        <div class="error-icon">⚠️</div>
+                        <h3>Wystąpił błąd</h3>
+                        <p id="errorMessage">Nie udało się załadować listy użytkowników.</p>
+                        <button id="retryButton" class="retry-button">Spróbuj ponownie</button>
+                    </div>
+                    
+                    <div id="usersList" class="users-list" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Stopka strony -->
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 Hydropol Spłuczka z. o. o</p>
+        </div>
+    </footer>
+    
+    <!-- Skrypt główny -->
+    <script src="/static/js/hamburger-menu.js"></script>
+    <script src="/static/js/admin_panel.js"></script>
+</body>
+</html>

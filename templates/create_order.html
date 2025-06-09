@@ -30,7 +30,12 @@
   <main class="main-content">
     <div class="container">
         <div class="form-container">
+            <div class="centered-logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo-image-centered">
+            </div>
+            
             <h2 class="section-title section-title-centered">Formularz Zgłoszenia Usterki</h2>
+            
             <p class="section-subtitle">Wypełnij poniższy formularz, aby zgłosić usterkę</p>
             
             <form id="orderForm" action="/create_order/" method="post" enctype="multipart/form-data" autocomplete="off">

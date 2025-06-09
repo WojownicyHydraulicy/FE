@@ -80,15 +80,15 @@ body {
     border-radius: 3px;
 }
 
-/* Hamburger Menu */
+/* Navigation Menu - Original Working Styles */
 .main-nav {
     display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
     position: relative;
 }
 
-.home-button {
+.nav-button {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -101,117 +101,149 @@ body {
     font-weight: 500;
     text-decoration: none;
     transition: var(--transition);
-    margin-right: 16px;
 }
 
-.home-button:hover {
+.nav-button:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
-    text-decoration: none;
-    color: white;
 }
 
-/* Poprawione Hamburger Menu - ikona i kontener */
+.btn-icon {
+    font-size: 1.1em;
+}
+
+/* Hamburger button - Original working styles */
 .hamburger-button {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
-    background: var(--primary);
-    color: white;
+    background-color: var(--primary);
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: var(--transition);
+    padding: 0;
+    z-index: 10;
     position: relative;
-    z-index: 1001;
-    padding: 0; /* Usunięcie wewnętrznego paddingu */
+    transition: background-color 0.3s ease;
 }
 
 .hamburger-button:hover {
-    background: var(--primary-dark);
+    background-color: var(--primary-dark);
 }
 
-/* Poprawiona ikona hamburgera */
-.hamburger-icon {
-    position: relative;
-    width: 20px;
-    height: 2px;
-    background: white;
-    transition: var(--transition);
-}
-
-.hamburger-icon::before,
+.hamburger-icon, 
+.hamburger-icon::before, 
 .hamburger-icon::after {
-    content: '';
-    position: absolute;
-    width: 100%; /* Pełna szerokość rodzica */
+    display: block;
+    width: 22px;
     height: 2px;
-    background: white;
-    transition: var(--transition);
-    left: 0; /* Wyrównanie do lewej krawędzi */
-    transform-origin: center; /* Transformacja z centrum */
+    background-color: white;
+    border-radius: 2px;
+    position: absolute;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger-icon {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .hamburger-icon::before {
-    transform: translateY(-6px);
+    content: '';
+    top: -7px;
+    left: 0;
 }
 
 .hamburger-icon::after {
-    transform: translateY(6px);
+    content: '';
+    bottom: -7px;
+    left: 0;
 }
 
-/* Poprawione przekształcenie hamburgera w X */
+/* X icon when menu is active */
+.hamburger-button.active {
+    background-color: var(--primary-dark);
+}
+
 .hamburger-button.active .hamburger-icon {
-    background: transparent;
+    background-color: transparent;
 }
 
 .hamburger-button.active .hamburger-icon::before {
+    top: 0;
     transform: rotate(45deg);
-    top: 0; /* Wyśrodkowanie */
 }
 
 .hamburger-button.active .hamburger-icon::after {
+    bottom: 0;
     transform: rotate(-45deg);
-    top: 0; /* Wyśrodkowanie */
 }
 
+/* Menu Items Dropdown */
 .menu-items {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    background: var(--card-background);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-md);
-    padding: 16px;
-    z-index: 1000;
-    min-width: 220px;
-    max-width: 280px;
     display: none;
+    position: absolute;
+    top: 100%;
+    right: 0; /* Align with the right side of the hamburger button */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    min-width: 220px;
+    z-index: 100;
+    margin-top: 8px;
+    padding: 8px 0;
     flex-direction: column;
-    gap: 12px;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    box-sizing: border-box; /* Zapewnia, że padding jest wliczany w szerokość */
-    overflow: hidden; /* Zapobiega wylewaniu się zawartości */
 }
 
 .menu-items.active {
     display: flex;
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .menu-items .nav-button {
-    width: 100%;
+    padding: 12px 16px;
+    border-radius: 0;
     justify-content: flex-start;
-    box-sizing: border-box; /* Zapewnia, że padding jest wliczany w szerokość */
-    white-space: nowrap; /* Zapobiega zawijaniu tekstu */
-    overflow: hidden; /* Zapobiega wylewaniu się tekstu */
-    text-overflow: ellipsis; /* Dodaje wielokropek dla zbyt długiego tekstu */
-    margin: 0; /* Usunięcie marginesów */
+    background: transparent;
+    color: var(--text-secondary);
+    border-bottom: 1px solid #eee;
+}
+
+.menu-items .nav-button:last-child {
+    border-bottom: none;
+}
+
+.menu-items .nav-button:hover {
+    background-color: #f5f5f5;
+    transform: none;
+    color: var(--text-primary);
+}
+
+.menu-items .nav-button.active {
+    background-color: #f0f7ff;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Owner-specific menu items - make consistent with regular nav buttons */
+.menu-items .owner-button {
+    /* Remove any special background and styling */
+    background-color: transparent; /* Same as regular nav-button */
+    color: var(--text-secondary); /* Same as regular nav-button */
+    display: none; /* Hidden by default, shown via JS based on role */
+}
+
+.menu-items .owner-button:hover {
+    background-color: #f5f5f5; /* Same hover as regular nav-button */
+    color: var(--text-primary); /* Same hover as regular nav-button */
+}
+
+.menu-items .owner-button.active {
+    background-color: #f0f7ff; /* Same active as regular nav-button */
+    color: var(--primary); /* Same active as regular nav-button */
+    font-weight: 600; /* Same active as regular nav-button */
 }
 
 /* Główny kontener treści */
@@ -535,4 +567,20 @@ a:hover {
     .main-content {
         padding: 15px 0;
     }
+}
+
+/* Header logo styling - fixed size */
+.header-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+
+.header-logo img {
+    height: 60px; /* Consistent size across all pages */
+    width: auto;
+    object-fit: contain;
 }

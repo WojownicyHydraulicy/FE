@@ -222,6 +222,25 @@
     color: var(--text-secondary);
 }
 
+/* Centered logo styling */
+.centered-logo {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 30px;
+    width: 100%;
+}
+
+.logo-image-centered {
+    width: 150px;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+.logo-image-centered:hover {
+    transform: scale(1.05);
+}
+
 /* Style dla urządzeń mobilnych */
 .mobile-device .form-group input,
 .mobile-device .form-group select,
