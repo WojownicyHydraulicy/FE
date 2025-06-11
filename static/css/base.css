@@ -127,21 +127,21 @@ body {
     font-size: 1.1em;
 }
 
-/* Hamburger button - Original working styles */
+/* Hamburger button - Ulepszony dla telefonów */
 .hamburger-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 48px; /* Zwiększony obszar dotykowy */
+    height: 48px; /* Zwiększony obszar dotykowy */
     background-color: var(--primary);
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     padding: 0;
     z-index: 10;
     position: relative;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
     margin-left: auto;
     /* Force to extreme right */
     right: 0;
@@ -155,12 +155,12 @@ body {
 .hamburger-icon::before, 
 .hamburger-icon::after {
     display: block;
-    width: 22px;
+    width: 24px; /* Nieznacznie większa ikona */
     height: 2px;
     background-color: white;
     border-radius: 2px;
     position: absolute;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.25s ease, opacity 0.2s ease;
 }
 
 .hamburger-icon {
@@ -200,20 +200,21 @@ body {
     transform: rotate(-45deg);
 }
 
-/* Menu Items Dropdown */
+/* Menu Items Dropdown - Ulepszone dla telefonów */
 .menu-items {
     display: none;
     position: absolute;
     top: 100%;
-    right: 0; /* Align with the right side of the hamburger button */
+    right: 0;
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    min-width: 220px;
+    border-radius: 12px; /* Większy promień */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Lepszy cień */
+    min-width: 240px; /* Szersze menu */
     z-index: 100;
     margin-top: 8px;
     padding: 8px 0;
     flex-direction: column;
+    overflow: hidden; /* Zapobiega wychodzeniu zawartości poza zaokrąglone rogi */
 }
 
 .menu-items.active {
@@ -221,12 +222,14 @@ body {
 }
 
 .menu-items .nav-button {
-    padding: 12px 16px;
+    padding: 16px 20px; /* Większy padding dla łatwiejszego tapnięcia */
     border-radius: 0;
     justify-content: flex-start;
     background: transparent;
     color: var(--text-secondary);
     border-bottom: 1px solid #eee;
+    font-size: 1rem; /* Większa czcionka */
+    min-height: 24px; /* Minimum wysokości dla tekstu */
 }
 
 .menu-items .nav-button:last-child {
@@ -485,45 +488,66 @@ a:hover {
     }
 }
 
-/* Responsive adjustments for hamburger menu */
+/* Responsive adjustments for hamburger menu - Ulepszone */
 @media (max-width: 768px) {
     .hamburger-button {
-        width: 44px;
-        height: 44px;
+        width: 52px; /* Jeszcze większy na telefonach */
+        height: 52px;
         border-radius: 10px;
+        margin-right: -5px; /* Kompensuje padding kontenera */
     }
     
-    .hamburger-icon {
-        width: 22px;
+    .hamburger-icon, 
+    .hamburger-icon::before, 
+    .hamburger-icon::after {
+        width: 26px; /* Większa ikona na telefonach */
     }
     
     .menu-items {
-        top: 55px;
+        top: calc(100% + 5px);
         width: 100%;
-        max-width: none;
+        max-width: 100%;
         right: 0;
         left: 0;
-        border-radius: 0 0 12px 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.18);
         padding: 12px 0;
         z-index: 2000;
+        max-height: 80vh; /* Ogranicza wysokość, aby uniknąć wyjścia poza ekran */
+        overflow-y: auto; /* Dodaje przewijanie, jeśli zawartość jest zbyt duża */
     }
     
     .menu-items .nav-button {
-        padding: 16px 20px;
+        padding: 18px 20px; /* Jeszcze większy padding na telefonach */
         border-radius: 0;
-        font-size: 1rem;
+        font-size: 1.05rem;
         justify-content: flex-start;
         transition: background-color 0.2s ease;
     }
     
+    /* Wyraźny stan aktywny dla dotyku */
     .menu-items .nav-button:active {
         background-color: #f0f0f0;
+        transform: scale(0.98);
     }
     
+    /* Usunięcie efektu hover, który nie działa dobrze na ekranach dotykowych */
     .menu-items .nav-button:hover {
         transform: none;
-        background-color: #f5f5f5;
+        background-color: transparent;
+    }
+    
+    /* Tylko dla aktywnego stanu */
+    .menu-items .nav-button.active {
+        background-color: #f0f7ff;
+        color: var(--primary);
+        font-weight: 600;
+    }
+    
+    /* Dodane - efekt dotyku dla przycisku hamburger */
+    .hamburger-button:active {
+        transform: scale(0.95);
+        opacity: 0.9;
     }
     
     /* Poprawiona obsługa safe area dla iPhone X i nowszych */
@@ -533,90 +557,89 @@ a:hover {
         padding-right: env(safe-area-inset-right, 0);
     }
     
-    .site-footer {
-        padding-bottom: env(safe-area-inset-bottom, 20px);
-    }
-    
     .menu-items {
         padding-bottom: env(safe-area-inset-bottom, 12px);
+        -webkit-overflow-scrolling: touch; /* Płynne przewijanie na iOS */
     }
     
-    /* Bardziej kompaktowy nagłówek na małych ekranach */
-    .header-content {
-        padding: 8px 0;
+    /* Dodaj styl dla opcjonalnego przycisku zamykania menu */
+    .close-menu-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 16px;
+        border: none;
+        background-color: #f5f5f5;
+        color: var(--text-secondary);
+        font-weight: 500;
+        margin-top: 10px;
+        border-radius: 0;
+        border-top: 1px solid #eee;
     }
     
-    .app-title {
-        font-size: 1.3rem;
-    }
-    
-    /* Poprawiony efekt naciśnięcia przycisku */
-    .nav-button:active,
-    .hamburger-button:active,
-    .home-button:active {
-        opacity: 0.7;
-        transform: scale(0.98);
+    .close-menu-button:active {
+        background-color: #e0e0e0;
     }
 }
 
 /* Dodatkowe poprawki dla bardzo małych ekranów */
 @media (max-width: 375px) {
-    .container {
-        padding: 0 15px;
+    .hamburger-button {
+        width: 48px; /* Nieznacznie mniejszy na najmniejszych ekranach */
+        height: 48px;
+        margin-right: -8px; /* Większa kompensacja */
     }
     
-    .app-title {
-        font-size: 1.2rem;
-        min-width: 0;
+    .menu-items .nav-button {
+        padding: 16px 16px; /* Mniejszy padding w poziomie */
+        font-size: 1rem;
     }
     
-    .home-button {
-        padding: 8px 12px;
-        font-size: 0.85rem;
+    /* Dodaj więcej miejsca dla przycisku hamburgera */
+    .header-content {
+        padding-right: 5px;
     }
 }
 
-/* Obsługa orientacji poziomej */
-@media (max-height: 500px) and (orientation: landscape) {
-    .menu-items {
-        max-height: 85vh;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .site-header {
-        position: sticky;
+/* Ulepszone stany dotykowe */
+@media (hover: none) {
+    /* Zastosuj lepsze style dotykowe tylko dla urządzeń dotykowych */
+    .menu-items .nav-button {
+        position: relative;
+        overflow: hidden;
     }
     
-    .main-content {
-        padding: 15px 0;
+    /* Dodaj efekt ripple (fala) przy kliknięciu */
+    .menu-items .nav-button::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 5px;
+        height: 5px;
+        background: rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        border-radius: 100%;
+        transform: scale(1, 1) translate(-50%, -50%);
+        transform-origin: 50% 50%;
     }
-}
-
-/* Header logo styling - fixed size */
-.header-logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-    display: flex;
-    align-items: center;
-}
-
-.header-logo img {
-    height: 60px; /* Consistent size across all pages */
-    width: auto;
-    object-fit: contain;
-}
-
-/* Logout button styling */
-.logout-button {
-    background-color: #f44336 !important;
-    color: white !important;
-    border-top: 1px solid #eee;
-    margin-top: 8px;
-}
-
-.logout-button:hover {
-    background-color: #d32f2f !important;
+    
+    .menu-items .nav-button:active::after {
+        opacity: 1;
+        width: 300px;
+        height: 300px;
+        animation: ripple 0.6s ease-out;
+    }
+    
+    @keyframes ripple {
+        0% {
+            opacity: 1;
+            transform: scale(0, 0) translate(-50%, -50%);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(1, 1) translate(-50%, -50%);
+        }
+    }
 }
