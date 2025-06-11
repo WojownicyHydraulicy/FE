@@ -13,20 +13,12 @@
         <div class="container">
             <div class="header-content">
                 <h1 class="app-title">Panel Wniosków Urlopowych</h1>
-                
-                <div class="header-logo">
-                    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
-                </div>
-                
-                 <nav class="main-nav">
+                <nav class="main-nav">
                     <button id="hamburgerBtn" class="hamburger-button">
                         <span class="hamburger-icon"></span>
                     </button>
                     
                     <div id="menuItems" class="menu-items">
-                        <a href="/orders_panel/" class="nav-button">
-                        <span class="btn-icon">🏠</span> Strona główna
-                        </a>
                         <a href="/orders_panel/" class="nav-button">
                             <span class="btn-icon">📋</span> Panel Zleceń
                         </a>
@@ -44,6 +36,9 @@
                         </a>
                         <a href="/admin_panel/" class="nav-button owner-button">
                             <span class="btn-icon">👥</span> Zarządzanie użytkownikami
+                        </a>
+                        <a href="/" class="nav-button">
+                            <span class="btn-icon">🚪</span> Wyloguj się
                         </a>
                     </div>
                 </nav>

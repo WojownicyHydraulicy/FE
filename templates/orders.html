@@ -2,13 +2,15 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Zarządzania Zleceniami</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/orders.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Panel Zleceń - System Zarządzania Zleceniami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/orders.css">
 </head>
 <body>
+    <!-- Nagłówek strony -->
     <header class="site-header">
         <div class="container">
             <div class="header-content">
@@ -18,16 +20,13 @@
                     <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
                 </div>
                 
-                 <nav class="main-nav">
+                <nav class="main-nav">
                     <button id="hamburgerBtn" class="hamburger-button">
                         <span class="hamburger-icon"></span>
                     </button>
                     
                     <div id="menuItems" class="menu-items">
-                        <a href="/orders_panel/" class="nav-button">
-                        <span class="btn-icon">🏠</span> Strona główna
-                        </a>
-                        <a href="/orders_panel/" class="nav-button">
+                        <a href="/orders_panel/" class="nav-button active">
                             <span class="btn-icon">📋</span> Panel Zleceń
                         </a>
                         <a href="/orders_on_addresses/" class="nav-button">
@@ -45,37 +44,39 @@
                         <a href="/admin_panel/" class="nav-button owner-button">
                             <span class="btn-icon">👥</span> Zarządzanie użytkownikami
                         </a>
+                        <a href="/" class="nav-button">
+                            <span class="btn-icon">🚪</span> Wyloguj się
+                        </a>
                     </div>
                 </nav>
             </div>
         </div>
     </header>
 
-    <main class="main-content">
+    <!-- Główna treść strony -->
+    <main class="main-content" id="mainContent" style="display: none;">
         <div class="container">
-            
-            <section class="orders-section" id="mainContent" style="display: none;">
+            <div class="orders-section">
                 <div class="section-header">
-                    <div class="decorated-heading">
-                        <div class="heading-icon">📋</div>
-                        <h2>Aktywne Zlecenia</h2>
-                    </div>
-                    <!-- Usunięto przyciski wyboru widoku (grid/list) -->
+                    <h2>Twoje aktywne zlecenia</h2>
                 </div>
+                
                 <div id="ordersList" class="orders-grid">
-                    <!-- Tutaj będą ładowane zlecenia -->
+                    <!-- Tu będą renderowane zlecenia przez JavaScript -->
                 </div>
-            </section>
+            </div>
         </div>
     </main>
-
+    
+    <!-- Stopka strony -->
     <footer class="site-footer">
         <div class="container">
             <p>&copy; 2025 Hydropol Spłuczka z. o. o</p>
         </div>
     </footer>
-
-    <script src="{{ url_for('static', filename='js/hamburger-menu.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/orders.js') }}"></script>
+    
+    <!-- Skrypt główny -->
+    <script src="/static/js/hamburger-menu.js"></script>
+    <script src="/static/js/orders.js"></script>
 </body>
 </html>

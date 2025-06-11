@@ -60,11 +60,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const overlayModal   = document.getElementById("overlayModal");
     const modalMessage   = document.getElementById("modalMessage");
     const modalClose     = document.getElementById("modalClose");
+    const processingWarning = document.getElementById('processingWarning');
+    const spinner = document.getElementById('spinner');
 
     form.addEventListener("submit", async e => {
         e.preventDefault();
         overlaySpinner.classList.remove("hidden");
         submitBtn.disabled = true;
+
+        // Show warning message
+        processingWarning.style.display = 'block';
+        spinner.style.display = 'block';
 
         const formData = new FormData(form);
         try {
@@ -95,6 +101,9 @@ document.addEventListener("DOMContentLoaded", function () {
         } finally {
             overlaySpinner.classList.add("hidden");
             overlayModal.classList.remove("hidden");
+            // Hide warning message
+            processingWarning.style.display = 'none';
+            spinner.style.display = 'none';
         }
     });
 

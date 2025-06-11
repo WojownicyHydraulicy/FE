@@ -16,7 +16,9 @@ async function initOrdersPage() {
         const orders = await fetchOrders(token);
         renderOrders(orders);
         initEventListeners();
-        checkOwnerRole(); // Dodajemy sprawdzenie roli
+        
+        // The hamburger menu and role checking is now handled by hamburger-menu.js
+        // No need to call checkOwnerRole() here as it's now in hamburger-menu.js
     } catch (error) {
         handleError(error);
     }
@@ -399,36 +401,6 @@ function handleError(error) {
             <button onclick="initOrdersPage()" class="retry-button">Spróbuj ponownie</button>
         </div>
     `;
-}
-
-// Sprawdź czy użytkownik jest właścicielem i pokaż/ukryj odpowiednie elementy
-async function checkOwnerRole() {
-    try {
-        const token = localStorage.getItem("auth_token");
-        const response = await fetch("https://orders-management-api-409909044870.europe-central2.run.app/check_role/", {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            }
-        });
-        
-        if (response.status === 401) {
-            return; // Już obsłużone w innych miejscach
-        }
-        
-        const data = await response.json();
-        
-        // Pokaż/ukryj przyciski tylko dla właścicieli
-        const ownerButtons = document.querySelectorAll('.owner-button');
-        if (data.role === "OWNER") {
-            ownerButtons.forEach(btn => btn.style.display = 'flex');
-        } else {
-            ownerButtons.forEach(btn => btn.style.display = 'none');
-        }
-    } catch (error) {
-        console.error("Błąd sprawdzania roli:", error);
-        // Nie pokazujemy widocznego błędu użytkownikowi
-    }
 }
 
 // Complete or delete an order

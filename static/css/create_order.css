@@ -374,3 +374,27 @@
         max-height: 90vh;
     }
 }
+
+/* Stylowanie komunikatu ostrzegawczego */
+.processing-warning {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.processing-warning strong {
+    font-weight: 600;
+}
+
+.spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
