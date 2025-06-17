@@ -1,3 +1,6 @@
+/**
+ * Funkcja inicjująca działanie po załadowaniu DOM.
+ */
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("searchForm");
     const resultsDiv = document.getElementById("searchResults");
@@ -64,7 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
     optimizeFormForMobile();
 });
 
-// Funkcja dodająca touch feedback
+/**
+ * Funkcja dodająca touch feedback
+ */
 function setupTouchFeedback() {
     document.querySelectorAll('.submit-btn, .result-card').forEach(elem => {
         elem.addEventListener('touchstart', function() {
@@ -77,7 +82,9 @@ function setupTouchFeedback() {
     });
 }
 
-// Optymalizacja formularza dla urządzeń mobilnych
+/**
+ * Funkcja do optymalizacji formularza dla urządzeń mobilnych
+ */
 function optimizeFormForMobile() {
     // Sprawdź czy używamy urządzenia mobilnego
     if (window.innerWidth <= 768) {
@@ -113,6 +120,12 @@ function optimizeFormForMobile() {
     }
 }
 
+/**
+ * Funkcja pokazująca na stronie pobrane zgłoszenia.
+ * @param {*} data - dane dotyczące zgłoszeń
+ * @param {*} resultsDiv - zwracany kontener
+ * @returns 
+ */
 function displayResults(data, resultsDiv) {
     resultsDiv.innerHTML = "";
     
@@ -190,7 +203,10 @@ function displayResults(data, resultsDiv) {
     });
 }
 
-// Sprawdź czy użytkownik jest właścicielem i pokaż/ukryj odpowiednie elementy
+/**
+ * Funkcja sprawdzająca czy użytkownik jest właścicielem i pokazująca/ukrywająca odpowiednie elementy
+ * @returns 
+ */
 async function checkOwnerRole() {
     try {
         const token = localStorage.getItem("auth_token");

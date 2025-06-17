@@ -1,8 +1,14 @@
+/**
+ * Funkcja inicjująca działanie po załadowaniu DOM.
+ */
 document.addEventListener("DOMContentLoaded", () => {
     initOrdersPage();
 });
 
-// Main initialization function
+/**
+ * Główna funkcja inicjalizacyjna
+ * @returns 
+ */
 async function initOrdersPage() {
     const token = localStorage.getItem("auth_token");
     if (!token) {
@@ -17,14 +23,16 @@ async function initOrdersPage() {
         renderOrders(orders);
         initEventListeners();
         
-        // The hamburger menu and role checking is now handled by hamburger-menu.js
-        // No need to call checkOwnerRole() here as it's now in hamburger-menu.js
+    // Menu hamburgera i sprawdzanie roli są teraz obsługiwane przez hamburger-menu.js
+    // Nie ma potrzeby wywoływania checkOwnerRole() tutaj, ponieważ znajduje się już w hamburger-menu.js    
     } catch (error) {
         handleError(error);
     }
 }
 
-// Display loading state
+/**
+ * Funkcja wyświetlająca stan ładowania
+ */
 function showLoadingState() {
     const container = document.getElementById("ordersList");
     container.innerHTML = `
@@ -35,7 +43,11 @@ function showLoadingState() {
     `;
 }
 
-// Fetch orders from API
+/**
+ * Funkcja pobierająca zamówienia z API
+ * @param {*} token - token
+ * @returns 
+ */
 async function fetchOrders(token) {
     const response = await fetch("https://orders-management-api-409909044870.europe-central2.run.app/fetch_orders/", {
         method: "POST",
@@ -59,7 +71,11 @@ async function fetchOrders(token) {
     return data.orders;
 }
 
-// Render orders to the page
+/**
+ * Funkcja wyświetlająca zamówienia na stronie
+ * @param {*} orders - zamówienia
+ * @returns 
+ */
 function renderOrders(orders) {
     document.getElementById("mainContent").style.display = "block";
     const container = document.getElementById("ordersList");
@@ -76,7 +92,7 @@ function renderOrders(orders) {
         return;
     }
 
-    // Group and sort orders by date
+    // Pogrupuj i posortuj zamówienia według daty
     const sortedOrders = orders.sort((a, b) => {
         const da = a.appointment_date || "";
         const db = b.appointment_date || "";
@@ -97,7 +113,11 @@ function renderOrders(orders) {
     });
 }
 
-// Format order date for display
+/**
+ * Funkcja formatująca datę zamówienia do wyświetlenia
+ * @param {*} dateString - data zamówienia
+ * @returns 
+ */
 function formatOrderDate(dateString) {
     if (!dateString) return "Brak umówionej wizyty";
     
@@ -109,7 +129,11 @@ function formatOrderDate(dateString) {
     });
 }
 
-// Render date group header
+/**
+ * Funkcja renderująca nagłówek grupy według daty
+ * @param {*} container - element, do którego zostanie dodany nagłówek
+ * @param {*} dateLabel - etykieta daty do wyświetlenia
+ */
 function renderDateHeader(container, dateLabel) {
     const header = document.createElement("div");
     header.classList.add("date-group");
@@ -124,7 +148,11 @@ function renderDateHeader(container, dateLabel) {
     container.appendChild(header);
 }
 
-// Render a single order card
+/**
+ * Funkcja wyświetlająca pojedyńczą kartę zgłoszenia
+ * @param {*} container - element, do którego zostanie dodana karta zgłoszenia
+ * @param {*} order - zgłoszenie
+ */
 function renderOrderCard(container, order) {
     const card = document.createElement("div");
     card.classList.add("order");
@@ -134,7 +162,7 @@ function renderOrderCard(container, order) {
         card.classList.add("priority-high");
     }
 
-    // Generate billing section if needed
+    // Wygeneruj sekcję rozliczeniową, jeśli jest potrzebna
     const billingHTML = order.sales_document === 'Faktura' ? `
         <div class="billing-info">
             <div class="info-header">
@@ -151,7 +179,7 @@ function renderOrderCard(container, order) {
             </div>
         </div>` : '';
 
-    // Generate photo section if available
+    // Wygeneruj sekcję ze zdjęciami, jeśli jest dostępna
     const imageHTML = order.photo_url ? `
         <div class="photo-container">
             <img src="${order.photo_url}" alt="Zdjęcie zlecenia" loading="lazy">
@@ -254,9 +282,11 @@ function renderOrderCard(container, order) {
     container.appendChild(card);
 }
 
-// Initialize all event listeners
+/**
+ * Funkcja inicjująca wszystkie nasłuchiwacze zdarzeń
+ */
 function initEventListeners() {
-    // Toggle AI comments
+    // Przełączaj komentarze AI
     document.querySelectorAll(".toggle-response").forEach(btn => {
         btn.addEventListener("click", toggleAIComment);
         
@@ -270,7 +300,7 @@ function initEventListeners() {
         }, { passive: true });
     });
     
-    // Action buttons (complete/delete)
+    // Przyciski akcji (zakończ/usuń)
     document.querySelectorAll("[data-action]").forEach(btn => {
         btn.addEventListener("click", handleOrderAction);
         
@@ -290,7 +320,10 @@ function initEventListeners() {
     }
 }
 
-// Toggle AI comment visibility
+/**
+ * Funkcja przełączająca widoczność komentarzy AI
+ * @param {*} event - obiekt zdarzenia wywołującego funkcję
+ */
 function toggleAIComment(event) {
     const btn = event.currentTarget;
     const responseBox = btn.nextElementSibling;
@@ -305,7 +338,10 @@ function toggleAIComment(event) {
     }
 }
 
-// Handle order action (complete/delete)
+/**
+ * Funkcja obsługująca akcję zamówienia (zakończ/usuń)
+ * @param {*} event - obiekt zdarzenia wywołującego funkcję
+ */
 function handleOrderAction(event) {
     const btn = event.currentTarget;
     const action = btn.dataset.action;
@@ -326,7 +362,9 @@ function handleOrderAction(event) {
     }
 }
 
-// Dodajemy obsługę gestów przesunięcia (swipe) na mobilnych urządzeniach
+/**
+ * Dodanie obsługi gestów przesunięcia (swipe) na mobilnych urządzeniach
+ */
 function setupSwipeActions() {
     const orders = document.querySelectorAll('.order');
     
@@ -388,7 +426,10 @@ function setupSwipeActions() {
     });
 }
 
-// Display error message
+/**
+ * Funkcja wyświetlająca komunikat błędu
+ * @param {*} error - błąd
+ */
 function handleError(error) {
     console.error("Błąd:", error);
     
@@ -403,7 +444,11 @@ function handleError(error) {
     `;
 }
 
-// Complete or delete an order
+/**
+ * Funkcja kończąca lub usuwająca zgłoszenie
+ * @param {*} orderId - identyfikator zgłoszenia
+ * @param {*} status - status
+ */
 async function finishOrder(orderId, status) {
     const token = localStorage.getItem("auth_token");
     

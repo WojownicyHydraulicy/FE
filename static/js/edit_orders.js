@@ -1,8 +1,15 @@
+/**
+ * Funkcja inicjująca działanie po załadowaniu DOM.
+ * Inicjuje formularz edycji zgłoszenia.
+ */
 document.addEventListener("DOMContentLoaded", () => {
     initEditOrdersPage();
 });
 
-// Inicjalizacja strony edycji zleceń
+/**
+ * Funkcja odpowiedzialna za inicjalizację strony edycji zleceń
+ * @returns 
+ */
 async function initEditOrdersPage() {
     const token = localStorage.getItem("auth_token");
     if (!token) {
@@ -11,16 +18,16 @@ async function initEditOrdersPage() {
     }
 
     try {
-        // Sprawdź rolę użytkownika
+        //  Sprawdź rolę użytkownika 
         await checkOwnerRole();
         
-        // Pobierz aktywne zlecenia do wyboru
+        //  Pobierz aktywne zlecenia do wyboru  
         await fetchActiveOrders();
         
-        // Pobierz listę pracowników do przypisania
+        //  Pobierz listę pracowników do przypisania 
         await fetchEmployees();
         
-        // Dodaj obsługę formularza
+        //  Dodaj obsługę formularza  
         initFormHandlers();
         
     } catch (error) {
@@ -28,7 +35,9 @@ async function initEditOrdersPage() {
     }
 }
 
-// Sprawdź czy użytkownik jest właścicielem
+/**
+ * Funkcja odpowiedzialna za sprawdzenie czy użytkownik jest właścicielem
+ */
 async function checkOwnerRole() {
     const token = localStorage.getItem("auth_token");
     
@@ -52,13 +61,15 @@ async function checkOwnerRole() {
         throw new Error("Brak dostępu. Tylko właściciel może edytować zlecenia.");
     }
     
-    // Pokazujemy przyciski dla właściciela
+    //  Pokazujemy przyciski dla właściciela 
     document.querySelectorAll('.owner-button').forEach(btn => {
         btn.style.display = 'flex';
     });
 }
 
-// Pobierz aktywne zlecenia do wyboru
+/**
+ * Funkcja odpowiedzialna za pobranie aktywnych zleceń do wyboru
+ */
 async function fetchActiveOrders() {
     const token = localStorage.getItem("auth_token");
     
@@ -84,11 +95,15 @@ async function fetchActiveOrders() {
     populateOrdersDropdown(data.orders);
 }
 
-// Wypełnij dropdown z zamówieniami
+/**
+ * Funkcja odpowiedzialna za wypełnienie dropdownu z zamówieniami
+ * @param {*} orders - lista zamówień
+ * @returns 
+ */
 function populateOrdersDropdown(orders) {
     const orderSelect = document.getElementById("orderSelect");
     
-    // Wyczyść istniejące opcje (oprócz domyślnej)
+    //  Wyczyść istniejące opcje (oprócz domyślnej) 
     while (orderSelect.options.length > 1) {
         orderSelect.remove(1);
     }
@@ -101,21 +116,25 @@ function populateOrdersDropdown(orders) {
         return;
     }
     
-    // Dodaj wszystkie zlecenia do dropdown
+    //  Dodaj wszystkie zlecenia do dropdown  
     orders.forEach(order => {
         const option = document.createElement("option");
         option.value = order.order_id;
         
-        // Format opisu zlecenia: "Imię, adres (ID)"
+        //  Format opisu zlecenia: "Imię, adres (ID)" 
         option.text = `${order.name}, ${order.street} ${order.house_nr} (ID: ${order.order_id})`;
         orderSelect.add(option);
     });
     
-    // Dodaj obsługę zmiany wyboru
+    //  Dodaj obsługę zmiany wyboru  
     orderSelect.addEventListener("change", handleOrderSelection);
 }
 
-// Obsługa wyboru zlecenia
+/**
+ * Funkcja odpowiedzialna za obsługę wyboru zlecenia
+ * @param {*} event - Obiekt zdarzenia DOM przekazany przez przeglądarkę.
+ * @returns 
+ */
 async function handleOrderSelection(event) {
     const orderId = event.target.value;
     
@@ -133,7 +152,10 @@ async function handleOrderSelection(event) {
     }
 }
 
-// Pobierz szczegóły wybranego zlecenia
+/**
+ * Funkcja odpowiedzialna za pobranie szczegółów wybranego zlecenia
+ * @param {*} orderId - identyfikator zgłoszenia
+ */
 async function fetchOrderDetails(orderId) {
     const token = localStorage.getItem("auth_token");
     
@@ -163,9 +185,12 @@ async function fetchOrderDetails(orderId) {
     populateOrderForm(data.order);
 }
 
-// Wypełnij formularz danymi zlecenia
+/**
+ * Funkcja odpowiedzialna za wypełnienie formularza danymi zlecenia
+ * @param {*} order - zgłoszenie 
+ */
 function populateOrderForm(order) {
-    // Podstawowe pola formularza
+    // Podstawowe pola formularza 
     document.getElementById("orderId").value = order.order_id;
     document.getElementById("name").value = order.name || "";
     document.getElementById("telephone").value = order.telephone || "";
@@ -182,7 +207,7 @@ function populateOrderForm(order) {
     document.getElementById("appointment_date").value = order.appointment_date || "";
     document.getElementById("price").value = order.price || "";
     
-    // Dane faktury
+    //  Dane faktury
     document.getElementById("billing_name").value = order.billing_name || "";
     document.getElementById("billing_address").value = order.billing_address || "";
     document.getElementById("billing_city").value = order.billing_city || "";
@@ -191,7 +216,7 @@ function populateOrderForm(order) {
     document.getElementById("billing_phone").value = order.billing_phone || "";
     document.getElementById("billing_tax_id").value = order.billing_tax_id || "";
     
-    // Pokazanie/ukrycie pól faktury
+    //  Pokazanie/ukrycie pól faktury  
     const invoiceFields = document.getElementById("invoiceFields");
     if (order.sales_document === "Faktura") {
         invoiceFields.style.display = "block";
@@ -199,7 +224,7 @@ function populateOrderForm(order) {
         invoiceFields.style.display = "none";
     }
     
-    // Przypisany pracownik
+    //  Przypisany pracownik 
     if (order.assigned_to) {
         const assignedSelect = document.getElementById("assignedTo");
         for (let i = 0; i < assignedSelect.options.length; i++) {
@@ -210,7 +235,7 @@ function populateOrderForm(order) {
         }
     }
     
-    // Zdjęcie zlecenia
+    //  Zdjęcie zlecenia 
     const photoContainer = document.getElementById("orderPhoto");
     if (order.photo_url) {
         photoContainer.innerHTML = `<img src="${order.photo_url}" alt="Zdjęcie zlecenia">`;
@@ -218,7 +243,7 @@ function populateOrderForm(order) {
         photoContainer.innerHTML = `<div class="no-photo">Brak zdjęcia</div>`;
     }
     
-    // Komentarz AI
+    //  Komentarz AI  
     const aiCommentBox = document.getElementById("aiComment");
     if (order.client_response) {
         aiCommentBox.innerHTML = order.client_response;
@@ -228,7 +253,9 @@ function populateOrderForm(order) {
     }
 }
 
-// Pobierz listę pracowników
+/**
+ * Funkcja odpowiedzialna za pobranie listy pracowników
+ */
 async function fetchEmployees() {
     const token = localStorage.getItem("auth_token");
     
@@ -258,11 +285,15 @@ async function fetchEmployees() {
     populateEmployeesDropdown(data.employees);
 }
 
-// Wypełnij dropdown z pracownikami
+/**
+ * Funkcja odpowiedzialna za wypełnienie dropdownu z pracownikami
+ * @param {*} employees 
+ * @returns 
+ */
 function populateEmployeesDropdown(employees) {
     const employeeSelect = document.getElementById("assignedTo");
     
-    // Wyczyść istniejące opcje (oprócz domyślnej)
+    //  Wyczyść istniejące opcje (oprócz domyślnej) 
     while (employeeSelect.options.length > 1) {
         employeeSelect.remove(1);
     }
@@ -275,7 +306,7 @@ function populateEmployeesDropdown(employees) {
         return;
     }
     
-    // Dodaj wszystkich pracowników do dropdown
+    //  Dodaj wszystkich pracowników do dropdown 
     employees.forEach(employee => {
         const option = document.createElement("option");
         option.value = employee.id;
@@ -284,25 +315,27 @@ function populateEmployeesDropdown(employees) {
     });
 }
 
-// Inicjalizacja obsługi formularza
+/**
+ * Funkcja odpowiedzialna za inicjalizację obsługi formularza
+ */
 function initFormHandlers() {
     const form = document.getElementById("editOrderForm");
     const cancelBtn = document.getElementById("cancelBtn");
     
-    // Obsługa zmiany typu dokumentu (paragon/faktura)
+    //  Obsługa zmiany typu dokumentu (paragon/faktura)  
     const salesDocumentSelect = document.getElementById("sales_document");
     salesDocumentSelect.addEventListener("change", function() {
         const invoiceFields = document.getElementById("invoiceFields");
         invoiceFields.style.display = this.value === "Faktura" ? "block" : "none";
     });
     
-    // Obsługa przycisku anuluj
+    //  Obsługa przycisku anuluj  
     cancelBtn.addEventListener("click", function() {
         document.getElementById("orderDetails").style.display = "none";
         document.getElementById("orderSelect").selectedIndex = 0;
     });
     
-    // Obsługa wysyłki formularza
+    //  Obsługa wysyłki formularza 
     form.addEventListener("submit", async function(event) {
         event.preventDefault();
         
@@ -315,7 +348,11 @@ function initFormHandlers() {
     });
 }
 
-// Aktualizacja zlecenia
+/**
+ * Funkcja odpowiedzialna za aktualizację zlecenia
+ * @param {*} formData - dane pobrane z formularza
+ * @returns 
+ */
 async function updateOrder(formData) {
     const token = localStorage.getItem("auth_token");
     
@@ -346,16 +383,21 @@ async function updateOrder(formData) {
     return data;
 }
 
-// Wyświetlanie komunikatów statusu
+
+/**
+ * Funkcja odpowiedzialna za wyświetlanie komunikatów statusu
+ * @param {*} message - komunikat statusu
+ * @param {*} type - typ statusu
+ */
 function showStatusMessage(message, type = "info") {
     const statusContainer = document.getElementById("statusMessages");
     
-    // Stwórz element komunikatu
+    //  Stwórz element komunikatu 
     const messageDiv = document.createElement("div");
     messageDiv.classList.add("status-message");
     messageDiv.classList.add(`${type}-message`);
     
-    // Dodaj ikonę w zależności od typu
+    //  Dodaj ikonę w zależności od typu  
     const iconMap = {
         success: "✅",
         error: "❌",
@@ -364,10 +406,10 @@ function showStatusMessage(message, type = "info") {
     
     messageDiv.innerHTML = `<span class="status-icon">${iconMap[type]}</span> ${message}`;
     
-    // Dodaj komunikat na górze kontenera
+    //  Dodaj komunikat na górze kontenera 
     statusContainer.prepend(messageDiv);
     
-    // Usuń komunikat po 5 sekundach (oprócz błędów)
+    //  Usuń komunikat po 5 sekundach (oprócz błędów)  
     if (type !== "error") {
         setTimeout(() => {
             messageDiv.style.opacity = "0";

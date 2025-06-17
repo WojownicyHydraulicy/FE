@@ -1,3 +1,6 @@
+/**
+ * Funkcja inicjująca działanie po załadowaniu DOM.
+ */
 document.addEventListener("DOMContentLoaded", function() {
     // Obsługa logowania
     const loginForm = document.getElementById("loginForm");

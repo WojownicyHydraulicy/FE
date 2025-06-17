@@ -1,8 +1,14 @@
+/**
+ * Funkcja inicjująca działanie po załadowaniu DOM.
+ */
 document.addEventListener("DOMContentLoaded", () => {
     initLeaveRequestsPage();
 });
 
-// Inicjalizacja strony wniosków urlopowych
+/**
+ * Funkcja inicjująca stronę wniosków urlopowych
+ * @returns 
+ */
 async function initLeaveRequestsPage() {
     const token = localStorage.getItem("auth_token");
     if (!token) {
@@ -24,7 +30,10 @@ async function initLeaveRequestsPage() {
     }
 }
 
-// Pobieranie dostępnych dni pracy
+/**
+ * Funkcja pobierająca dostępne dni pracy
+ * @param {*} token - token użytkownika
+ */
 async function fetchAvailableDays(token) {
     try {
         const response = await fetch("https://orders-management-api-409909044870.europe-central2.run.app/fetch_working_days/", {
@@ -53,7 +62,11 @@ async function fetchAvailableDays(token) {
     }
 }
 
-// Wypełnianie selecta dostępnymi dniami
+/**
+ * Funkcja wypełniająca selecta dostępnymi dniami
+ * @param {*} workingDays - dostępne dni
+ * @returns 
+ */
 function populateDateSelect(workingDays) {
     const dateSelect = document.getElementById("workDate");
     
@@ -92,7 +105,9 @@ function populateDateSelect(workingDays) {
     });
 }
 
-// Inicjalizacja obsługi formularza
+/**
+ * Funkcja inicjująca obsługę formularza
+ */
 function initFormHandlers() {
     const form = document.getElementById("leaveRequestForm");
     const loadingIndicator = document.getElementById("loadingIndicator");
@@ -157,7 +172,12 @@ function initFormHandlers() {
     });
 }
 
-// Wysyłanie wniosku urlopowego
+/**
+ * Funkcja odpowiedzialna za wysyłanie wniosku urlopowego
+ * @param {*} workDate - data urlopu
+ * @param {*} reason - powód
+ * @returns 
+ */
 async function submitLeaveRequest(workDate, reason) {
     const token = localStorage.getItem("auth_token");
     
@@ -188,7 +208,10 @@ async function submitLeaveRequest(workDate, reason) {
     return data;
 }
 
-// Sprawdź czy użytkownik jest właścicielem i pokaż/ukryj odpowiednie elementy
+/**
+ * Funkcja sprawdzająca czy użytkownik jest właścicielem i pokazująca/ukrywająca odpowiednie elementy
+ * @returns 
+ */
 async function checkOwnerRole() {
     try {
         const token = localStorage.getItem("auth_token");
@@ -218,7 +241,11 @@ async function checkOwnerRole() {
     }
 }
 
-// Wyświetlanie komunikatów statusu
+/**
+ * Funkcja wyświetlająca komunikaty statusu
+ * @param {*} message - treść komunikatu
+ * @param {*} type  - typ komunikatu
+ */
 function showStatusMessage(message, type = "info") {
     const statusDiv = document.getElementById("requestStatus");
     statusDiv.textContent = message;

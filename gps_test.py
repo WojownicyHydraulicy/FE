@@ -1,7 +1,17 @@
+"""
+@file get_location.py
+@brief Skrypt pobierający i wyświetlający lokalizację użytkownika na podstawie adresu IP.
+"""
+
 import requests
 import time
 
 def get_location():
+    """
+    @brief Pobiera lokalizację użytkownika za pomocą API ipinfo.io.
+    @return None
+    @exception Exception Gdy nie uda się pobrać danych lub wystąpi błąd sieciowy.
+    """
     try:
         response = requests.get('https://ipinfo.io/json')
         data = response.json()

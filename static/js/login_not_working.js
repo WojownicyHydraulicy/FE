@@ -9,7 +9,7 @@ document.getElementById("loginForm").addEventListener("submit", async e => {
       body: JSON.stringify({ email, password })
     });
     const json = await res.json();
-    if (!res.ok) throw new Error(json.detail || JSON.stringify(json));
+    if (!res.ok) throw new Error(json.detail || JSON.stringify(json)); 
     // zapis tokenu
     localStorage.setItem("auth_token", json.token);
     window.location.href = "/orders_panel/";
