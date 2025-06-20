@@ -1,14 +1,18 @@
+/**
+ * Funkcja inicjująca działanie po załadowaniu DOM.
+ */
 document.addEventListener("DOMContentLoaded", async function() {
     const hamburgerButton = document.querySelector('.hamburger-button');
     const menuItems = document.querySelector('.menu-items');
     
-    // Toggle menu on hamburger button click
+    // Przełącz menu po kliknięciu przycisku hamburgera
+    
     hamburgerButton.addEventListener('click', function() {
         this.classList.toggle('active');
         menuItems.classList.toggle('active');
     });
     
-    // Close menu when clicking outside
+    // Zamknij menu po kliknięciu poza nim
     document.addEventListener('click', function(event) {
         if (!hamburgerButton.contains(event.target) && !menuItems.contains(event.target)) {
             hamburgerButton.classList.remove('active');
@@ -16,7 +20,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     });
     
-    // Close menu when pressing Escape key
+    // Zamknij menu po naciśnięciu klawisza Escape
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             hamburgerButton.classList.remove('active');
@@ -26,8 +30,8 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Sprawdź rolę użytkownika i dodaj link do panelu administratora, jeśli to OWNER
     await checkAndAddAdminLink();
-    
-    // Handle logout button
+     
+    // Obsłuż przycisk wylogowania
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
@@ -39,17 +43,20 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
     }
     
-    // Initially hide owner-specific menu items until role check completes
+    // Początkowo ukryj elementy menu przeznaczone dla właściciela, aż do zakończenia sprawdzania roli
     const ownerButtons = document.querySelectorAll('.owner-button');
     ownerButtons.forEach(btn => {
         btn.style.display = 'none';
     });
     
-    // Check user role and show/hide owner-specific menu items
+    //  Sprawdź rolę użytkownika i pokaż/ukryj elementy menu przeznaczone dla właściciela
     checkUserRole();
 });
 
-// Funkcja sprawdzająca rolę użytkownika i dodająca link do panelu administratora
+/**
+ * Funkcja sprawdzająca rolę użytkownika i dodająca link do panelu administratora
+ * @returns 
+ */
 async function checkAndAddAdminLink() {
     // Sprawdź, czy użytkownik jest zalogowany
     const token = localStorage.getItem("auth_token");
@@ -58,7 +65,7 @@ async function checkAndAddAdminLink() {
     }
     
     try {
-        // Sprawdź rolę użytkownika
+        //  Sprawdź rolę użytkownika
         const response = await fetch("https://orders-management-api-409909044870.europe-central2.run.app/check_role/", {
             method: "GET",
             headers: {
@@ -81,7 +88,10 @@ async function checkAndAddAdminLink() {
     }
 }
 
-// Funkcja dodająca link do panelu administratora
+/**
+ * Funkcja dodająca link do panelu administratora
+ * @returns 
+ */
 function addAdminPanelLink() {
     // Znajdź kontener menu
     const menuItems = document.querySelector('.menu-items');
@@ -111,7 +121,10 @@ function addAdminPanelLink() {
     }
 }
 
-// Function to check user role and show/hide menu items
+/**
+ * Funkcja sprawdzająca rolę użytkownika i pokazująca/ukrywająca elementy menu
+ * @returns 
+ */
 async function checkUserRole() {
     try {
         const token = localStorage.getItem("auth_token");
@@ -134,7 +147,7 @@ async function checkUserRole() {
         const data = await response.json();
         console.log("User role check response:", data);
         
-        // Show owner-specific menu items only if user is OWNER
+        // Pokaż elementy menu przeznaczone dla właściciela tylko wtedy, gdy użytkownik ma rolę OWNER
         const ownerButtons = document.querySelectorAll('.owner-button');
         if (data.role === "OWNER") {
             console.log("User is OWNER, showing owner buttons:", ownerButtons.length);

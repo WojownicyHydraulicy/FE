@@ -1,3 +1,6 @@
+/**
+ * Funkcja inicjująca działanie po załadowaniu DOM.
+ */
 document.addEventListener("DOMContentLoaded", async function() {
     // Sprawdź, czy użytkownik jest zalogowany
     const token = localStorage.getItem("auth_token");
@@ -29,7 +32,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 });
 
-// Funkcja dodająca link do panelu administratora
+/**
+ * Funkcja dodająca link do panelu administratora
+ * @returns 
+ */
 function addAdminPanelLink() {
     // Znajdź kontener menu
     const menuItems = document.getElementById("menuItems");

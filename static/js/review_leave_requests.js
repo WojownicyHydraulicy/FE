@@ -1,8 +1,14 @@
+/**
+ * Funkcja inicjująca działanie po załadowaniu DOM.
+ */
 document.addEventListener("DOMContentLoaded", () => {
     initReviewPage();
 });
 
-// Inicjalizacja strony przeglądania wniosków
+/**
+ * Funkcja inicjująca stronę przeglądania wniosków urlopowych
+ * @returns 
+ */
 async function initReviewPage() {
     const token = localStorage.getItem("auth_token");
     if (!token) {
@@ -18,7 +24,11 @@ async function initReviewPage() {
     }
 }
 
-// Pobieranie oczekujących wniosków
+/**
+ * Funkcja pobierająca oczekujące wnioski
+ * @param {*} token - token
+ * @returns 
+ */
 async function fetchPendingRequests(token) {
     const response = await fetch("https://orders-management-api-409909044870.europe-central2.run.app/pending_leave_requests/", {
         method: "GET",
@@ -46,7 +56,11 @@ async function fetchPendingRequests(token) {
     return data.leave_requests;
 }
 
-// Renderowanie oczekujących wniosków
+/**
+ * Funkcja renderująca oczekujące wnioski
+ * @param {*} requests - oczekujące wnioski
+ * @returns 
+ */
 function renderPendingRequests(requests) {
     const container = document.getElementById("pendingRequests");
     container.innerHTML = "";
@@ -77,7 +91,11 @@ function renderPendingRequests(requests) {
     initActionButtons();
 }
 
-// Renderowanie widoku mobilnego jako karty
+/**
+ * Funkcja odpowiedzialna za renderowanie widoku mobilnego jako karty
+ * @param {*} requests  - wnioski
+ * @param {*} container - element, do którego zostanie dodany nagłówek
+ */
 function renderMobileCards(requests, container) {
     const cardsContainer = document.createElement("div");
     cardsContainer.className = "mobile-requests-cards";
@@ -115,7 +133,11 @@ function renderMobileCards(requests, container) {
     container.appendChild(cardsContainer);
 }
 
-// Renderowanie standardowego widoku tabeli
+/**
+ * Funkcja odpowiedzialna za renderowanie standardowego widoku tabeli
+ * @param {*} requests - wnioski
+ * @param {*} container - element, do którego zostanie dodany nagłówek
+ */
 function renderDesktopTable(requests, container) {
     // Tworzenie tabeli wniosków
     const table = document.createElement("table");
@@ -137,7 +159,7 @@ function renderDesktopTable(requests, container) {
     
     const tbody = table.querySelector("tbody");
     
-    // Dodawanie wierszy
+    //  Dodawanie wierszy
     requests.forEach(request => {
         const row = document.createElement("tr");
         
@@ -166,13 +188,15 @@ function renderDesktopTable(requests, container) {
     container.appendChild(table);
 }
 
-// Inicjalizacja przycisków akcji z obsługą dotykową
+/**
+ * Funkcja inicjująca przyciski akcji z obsługą dotykową
+ */
 function initActionButtons() {
     // Przyciski zatwierdzania
     document.querySelectorAll(".approve-btn").forEach(btn => {
         btn.addEventListener("click", (e) => handleReviewAction(e.target.dataset.id, "approve"));
         
-        // Dodajemy obsługę dotyku z lepszym feedbackiem
+        //  Dodajemy obsługę dotyku z lepszym feedbackiem
         btn.addEventListener("touchstart", function() {
             this.classList.add("touch-active");
         }, { passive: true });
@@ -197,7 +221,12 @@ function initActionButtons() {
     });
 }
 
-// Obsługa akcji zatwierdzania/odrzucania
+/**
+ * Funkcja obsługująca akcje zatwierdzania/odrzucania
+ * @param {*} requestId 
+ * @param {*} action 
+ * @returns 
+ */
 async function handleReviewAction(requestId, action) {
     const token = localStorage.getItem("auth_token");
     
@@ -252,7 +281,7 @@ async function handleReviewAction(requestId, action) {
             setTimeout(() => {
                 row.remove();
                 
-                // Sprawdź czy zostały jakieś wnioski
+                //  Sprawdź czy zostały jakieś wnioski
                 const remainingRows = document.querySelectorAll(".requests-table tbody tr");
                 if (remainingRows.length === 0) {
                     // Odśwież stronę, aby pokazać komunikat o braku wniosków
@@ -270,7 +299,10 @@ async function handleReviewAction(requestId, action) {
     }
 }
 
-// Obsługa błędów
+/**
+ * Funkcja do obsługi błędów
+ * @param {*} error - błąd
+ */
 function handleError(error) {
     console.error("Błąd:", error);
     
